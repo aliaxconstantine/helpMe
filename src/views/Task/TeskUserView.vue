@@ -150,11 +150,12 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, toRefs, onMounted, onUnmounted } from 'vue';
-import type { TUser, Task, OtherUserFrom } from '@/utils/TypeInclass';
-import { getTask, getOtherUser, routerTeskView, getTypeTasks, getTaskTime, handleAvatarClick, submitTask } from '@/utils/utils';
+import type { TUser, Task, OtherUserFrom } from '@/pojos/TypeInclass';
+import { getTask, getOtherUser, getTypeTasks, getTaskTime,submitTask } from '@/apis/apis';
+import { routerTeskView,handleAvatarClick } from '@/apis/routeApis';
 import picturdLoadView from "../views/picture/pictureLoadView.vue"
 import AreaLocation from './AreaLocation.vue';
-import type { TaskItem, TaskTime } from '@/utils/Typeimpl';
+import type { TaskItem, TaskTime } from '@/pojos/Typeimpl';
 import { userStore } from '@/utils/role';
 import HeaderView from './HeaderView.vue';
 import { getType, formatToYMDHM } from '@/utils/dataUtils'

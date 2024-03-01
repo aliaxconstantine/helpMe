@@ -46,13 +46,13 @@
 </template>
   
 <script lang="ts" setup>
-import { TaskItem, UserStar, TaskTime, User } from '../utils/Typeimpl'; // 请替换为正确的路径
+import { TaskItem, UserStar, TaskTime, User } from '@/pojos/Typeimpl'; // 请替换为正确的路径
 import HeaderView from './HeaderView.vue';
 import { onMounted, ref } from 'vue';
-import { getTask, getTaskTime, sendUserMessage, addFriend, finishTask, routerView, getOtherUser, handleAvatarClick } from '../utils/utils';
-import { routerTeskView } from '../utils/utils';
+import { getTask, getTaskTime, sendUserMessage, addFriend, finishTask, getOtherUser } from '@/apis/apis';
+import { routerTeskView,routerView, handleAvatarClick } from '@/apis/routeApis';
 import { ElMessageBox } from 'element-plus';
-import type { UserFrom } from '@/utils/TypeInclass';
+import type { UserFrom } from '@/pojos/TypeInclass';
 const props = defineProps(
     {
         id: {

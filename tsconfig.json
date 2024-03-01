@@ -11,7 +11,14 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@/*": [
+        "/src/*"
+      ]
+    },
     "outDir": "./dist/js",
     // ...other config
   },

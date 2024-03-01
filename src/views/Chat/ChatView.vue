@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { userStore } from "../utils/role"
+import { userStore } from "@/utils/role"
 import { ref } from "vue"
-import HeaderView from "./HeaderView.vue";
-import type { TUser, Communication, Friend } from "@/utils/TypeInclass";
-import { friendInfo } from "@/utils/Typeimpl";
-import { getFriendMessages, getFriends, sendUserMessage } from "@/utils/utils";
-import { errorLog } from "@/utils/axiosRequest";
+import HeaderView from "@/HeaderView.vue";
+import type { TUser, Communication, Friend } from "@/pojos/TypeInclass";
+import { friendInfo } from "@/pojos/Typeimpl";
+import { getFriendMessages, getFriends, sendUserMessage } from "@/apis/apis";
+import { errorLog } from "@/apis/axiosRequest";
 import { getTimeElapsedString, Emoji } from "@/utils/dataUtils";
 import { onMounted } from "vue";
 const props = defineProps({

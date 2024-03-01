@@ -163,11 +163,11 @@
     </el-dialog>
 </template>
 <script lang="ts" setup>
-import type { UserInfo } from '@/utils/Typeimpl';
+import type { UserInfo } from '@/pojos/Typeimpl';
 import HeaderView from './HeaderView.vue';
 import { ref } from 'vue';
-import type { UserFrom } from '@/utils/TypeInclass';
-import { getSelfInfo,updateAavatar, getUserInfo, updateInfoUser, updateDetailUser, updatePassword, getVerificationCode, getAllRecodeList, sendResetCode } from '@/utils/utils';
+import type { UserFrom } from '@/pojos/TypeInclass';
+import { getSelfInfo,updateAavatar, getUserInfo, updateInfoUser, updateDetailUser, updatePassword, getVerificationCode, getAllRecodeList, sendResetCode } from '@/apis/apis';
 import { ElMessageBox } from 'element-plus';
 import  pictureLoadViewVue from './picture/pictureLoadView.vue';
 import {onMounted} from 'vue';

@@ -55,13 +55,14 @@
   
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import HeaderView from './HeaderView.vue';
-import { type TaskItem, TaskEnum } from '../utils/Typeimpl';
-import { getTypeTasks, getTask, getUserTasks, routerTeskView,routerUserTaskView} from '../utils/utils';
-import { userStore } from '@/utils/role';
-import { errorLog } from '@/utils/axiosRequest';
-import { type TabsPaneContext } from 'element-plus';
-import { getType } from '@/utils/dataUtils';
+import HeaderView from './HeaderView.vue'
+import { type TaskItem, TaskEnum } from '@/pojos/Typeimpl'
+import { getTypeTasks, getTask, getUserTasks,} from '@/apis/apis'
+import { routerTeskView,routerUserTaskView} from '@/apis/routeApis'
+import { userStore } from '@/utils/role'
+import { errorLog } from '@/apis/axiosRequest'
+import { type TabsPaneContext } from 'element-plus'
+import { getType } from '@/utils/dataUtils'
 
 
 const ifLoad = ref(false)

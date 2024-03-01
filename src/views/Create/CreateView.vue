@@ -67,13 +67,13 @@
 <script setup lang="ts">
 import HeaderView from './HeaderView.vue';
 import { ref, type Ref, nextTick } from "vue"
-import { sendTask } from "../utils/utils"
+import { sendTask } from "@/apis/apis"
 import { userStore } from '@/utils/role';
 import { ElInput, ElMessage } from 'element-plus'
-import picturdLoadView from "../views/picture/pictureLoadView.vue"
-import { TaskItem, TaskFrom, areaM } from '@/utils/Typeimpl';
-import SelectAreaViewVue from './SelectAreaView.vue';
-import { routerView } from '..//utils/utils';
+import picturdLoadView from '@/views/Picture/pictureLoadView.vue'
+import { TaskItem, TaskFrom, areaM } from '@/pojos/Typeimpl';
+import SelectAreaViewVue from '@/views/Select/SelectAreaView.vue';
+import { routerView } from '@/apis/routeApis';
 
 
 const dataflag = ref(false)

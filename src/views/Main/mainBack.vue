@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ElHeader } from 'element-plus';
-import TeskViewVue from '../views/TeskView.vue';
-import HeaderView from '../views/HeaderView.vue'
+import TeskViewVue from '@/views/TeskView.vue';
+import HeaderView from '@/views/HeaderView.vue'
 import { ref } from 'vue'
-import { routerView } from '../utils/utils';
+import { routerView } from '@/apis/routeApis';
 
 const ismain = ref(true)
 document.title = "主页"

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { routerStringView, routerView, getUserTasks, routerTeskView, routerUserTaskView, routerKeyView } from '../utils/utils'
-import { type Task } from "../utils/TypeInclass"
-import { checkLoginStatus, router, } from "../router/index"
-import { userStore } from "../utils/role"
-import { store } from '../utils/auth'
-import { errorLog } from '@/utils/axiosRequest'
+import {  getUserTasks, } from '@/apis/apis'
+import {routerStringView, routerView, routerTeskView, routerUserTaskView, routerKeyView} from '@/apis/routeApis'
+import { type Task } from "@/pojos/TypeInclass"
+import { checkLoginStatus, router, } from '@/router/index'
+import { userStore } from '@/utils/role'
+import { store } from '@/utils/auth'
+import { errorLog } from '@/apis/axiosRequest'
 import { getType } from '@/utils/dataUtils'
 import { ElMessage, ElMessageBox } from 'element-plus'
 

@@ -61,11 +61,12 @@
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
 import { type TabsPaneContext, type FormRules, ElMessageBox } from 'element-plus'
-import { getSelfInfo, routerView, registerUser, getVerificationCode } from "../utils/utils"
-import { type TUser, type UserFrom, type RegisterForm, type HttpResult } from "../utils/TypeInclass"
-import { type UserInfoFrom } from "../utils/Typeimpl";
-import { store } from '../utils/auth';
-import { userStore } from '../utils/role';
+import { getSelfInfo, registerUser, getVerificationCode } from "@/apis/apis"
+import {routerView} from '@/apis/routeApis'
+import { type TUser, type UserFrom, type RegisterForm, type HttpResult } from "@/pojos/TypeInclass"
+import { type UserInfoFrom } from "@/pojos/Typeimpl";
+import { store } from '@/utils/auth';
+import { userStore } from '@/utils/role';
 
 
 const ustore = userStore()

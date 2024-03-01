@@ -89,13 +89,13 @@
 </template>
 
 <script setup lang="ts">
-import { OtherUser, UserInfo, UserStar } from '../pojos/Typeimpl'
+import { OtherUser, UserInfo, UserStar } from '@/pojos/Typeimpl'
 import HeaderView from './HeaderView.vue';
-import { type TaskItem, type friendInfo } from '../pojos/Typeimpl';
+import { type TaskItem, type friendInfo } from '@/pojos/Typeimpl';
 import { ref } from "vue";
 import { getType } from '@/utils/dataUtils';
-import {routerUserTaskView, routerView, routerTeskView,} from '../apis/routeApis';
-import { getOtherUserTasks, getOtherUserStars, getOtherUser, addFriend, getFriends, removeFriend } from '../apis/apis';
+import {routerUserTaskView, routerView, routerTeskView,} from '@/apis/routeApis';
+import { getOtherUserTasks, getOtherUserStars, getOtherUser, addFriend, getFriends, removeFriend } from '@/apis/apis';
 import { userStore } from '@/utils/role';
 import { onMounted } from "vue";
 const props = defineProps({

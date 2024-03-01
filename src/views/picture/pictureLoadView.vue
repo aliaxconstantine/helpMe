@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElMessage, type UploadFile, type UploadRequestHandler } from 'element-plus';
-import { errorLog, url } from "@/utils/axiosRequest";
-import { uploadFile } from "@/utils/utils";
+import { errorLog, url } from '@/apis/axiosRequest'
+import { uploadFile } from '@/apis/apis'
 
 const props = defineProps({
     pictures: {

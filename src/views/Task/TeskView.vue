@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { routerTeskView, getPageTasks } from '../utils/utils'
-import { type Task } from "../utils/TypeInclass"
+import { getPageTasks } from '@/apis/apis'
+import { routerTeskView } from '@/apis/routeApis'
+import { type Task } from "@/pojos/TypeInclass"
 import { ref } from 'vue';
 
 

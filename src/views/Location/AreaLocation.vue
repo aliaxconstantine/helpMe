@@ -1,16 +1,26 @@
 <template>
-  <div>
-    <el-text> 搜索地点 </el-text>
-    <el-input :v-model="props.map"> </el-input>
-  </div>
-  <div id="container" style="height: 800px;width: 800px;"></div>
+  <div id="container" style="height: 1800px;width: 1500px;"></div>
 </template>
 <script setup lang="ts">
 import AMapLoader from '@amap/amap-jsapi-loader';
 import { ref } from 'vue'
-import{ areaM } from '../utils/Typeimpl'
-import { ElMessage } from 'element-plus';
+import { getLocationUserTasks } from '@/apis/apis';
+import { errorLog } from '@/apis/axiosRequest';
+import type { Task } from '@/pojos/TypeInclass';
+const props = defineProps({
+  teskId: {
+    type: String,
+    required: true
+  },
+  publisherId: {
+    type: String,
+    required: true
+  }
+})
+
 const map = ref()
+const locations = ref(Array<Task>())
+
 declare global {
   interface Window {
     _AMapSecurityConfig: {
@@ -19,13 +29,13 @@ declare global {
   }
 }
 
-const props = defineProps({
-    map: {
-      type: areaM,
-      required: true,
-    }
-  })
-
+const getLocationOfCUser = async () => {
+  try {
+    locations.value = await getLocationUserTasks(Number(props.publisherId), Number(props.teskId)) as Task[]
+  } catch (error) {
+    errorLog(error)
+  }
+}
 
 window._AMapSecurityConfig = {
   securityJsCode: '4dfc0f4be660ab821cd8b992c174c22f',
@@ -49,48 +59,29 @@ AMapLoader.load({
     resizeEnable: true
   });
 
+  map.value.clearMap()
 
-  const onClick = (e: any) => {
-    const point = [e.lnglat.getLng(), e.lnglat.getLat()]
-
-    AMap.plugin('AMap.Geocoder', function () {
-      var geocoder = new AMap.Geocoder()
-      geocoder.getAddress(point, function (status: any, result: any) {
-        if (status === 'complete' && result.info === 'OK') {
-          const address = result.regeocode.formattedAddress as string;
-          ElMessage('您选择了：' + address)
-          props.map.name = address
-        }
-        props.map.x = e.lnglat.getLng()
-        props.map.y = e.lnglat.getLat()
-        props.map.ifSelect = true
-      })
-    })
-
-
-    let Icon = new AMap.Icon({
+  let Icon = new AMap.Icon({
       size: new AMap.Size(20, 35),
       image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
       imageSize: new AMap.Size(20, 35),
     });
 
-
+  locations.value.forEach(location => {
     const marker = new AMap.Marker({
       icon: Icon,
-      position: point,
+      position: [location.x,location.y],
       offset: new AMap.Pixel(-13, -30)
     });
-    map.value.clearMap()
+
     map.value.add(marker)
+  })
 
-  }
-  map.value.on('click', onClick);
-
-
-}).catch(e => {
-
+}).catch(error => {
+  errorLog(error)
 })
 
+getLocationOfCUser()
 
 </script>
-../pojos/Typeimpl
+  @/apis/axiosRequest@/utils/apis@/pojos/TypeInclass

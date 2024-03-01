@@ -57,9 +57,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import HeaderView from "./HeaderView.vue";
-import type { TaskItem } from "@/utils/Typeimpl";
-import { routerTeskView, getTaskTags, getTaskByCategory, getTaskByKeyword, handleAvatarClick } from "@/utils/utils";
-import type { TaskCategory } from "@/utils/TypeInclass";
+import type { TaskItem } from "@/pojos/Typeimpl";
+import { getTaskTags, getTaskByCategory, getTaskByKeyword } from "@/apis/apis";
+import {routerTeskView,handleAvatarClick} from "@/apis/routeApis";
+import type { TaskCategory } from "@/pojos/TypeInclass";
 const props = defineProps({
     select: {
         type: String,

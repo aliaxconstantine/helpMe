@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import HeaderView from './HeaderView.vue';
-import TeskView from './TeskView.vue';
-import { getTask, getTaskChat, sendTaskMessage, handleAvatarClick } from "../utils/utils"
-import { type Task, type TUser } from "../utils/TypeInclass"
-import { errorLog } from '@/utils/axiosRequest'
-import { userStore } from "../utils/role"
-import { routerView, deleteTask } from '../utils/utils';
+import HeaderView from '@/views/Main/HeaderView.vue';
+import TeskView from '@/views/Main/TeskView.vue';
+import { getTask, getTaskChat, sendTaskMessage,  } from "@/apis/apis"
+import{handleAvatarClick} from '@/apis/routeApis'
+import { type Task, type TUser } from "@/pojos/TypeInclass"
+import { errorLog } from '@/apis/axiosRequest'
+import { userStore } from "@/utils/role"
+import { deleteTask } from '@/apis/apis'
+import { routerView,routerTeskView} from '@/apis/routeApis';
 import { ElMessageBox } from 'element-plus';
-import { type TaskItem, TaskMessageImpl } from '@/utils/Typeimpl';
-import { routerTeskView } from '../utils/utils';
+import { type TaskItem, TaskMessageImpl } from '@/pojos/Typeimpl';
 import { getTimeElapsedString } from '@/utils/dataUtils';
 import { watch } from "vue";
 
