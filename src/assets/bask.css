@@ -1,0 +1,796 @@
+.card-footer {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.card-footer-message {
+  height: 150px;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
+.message-input {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.card-send {
+  padding: 10px 20px;
+  float: right;
+}
+
+.container {
+  height: calc(100vh - 64px);
+}
+
+.container-aside {
+  width: 30%;
+  height: 700px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.chatUser-card {
+  margin-bottom: 10px;
+}
+
+.main-card {
+  width: 100%;
+  height: 80%;
+}
+.chatMessage-card {
+  margin-bottom: 20px; /* 可选：调整每个聊天消息卡片之间的垂直间距 */
+}
+
+.chatMessage-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 垂直居中对齐 */
+  align-items: flex-start; /* 调整消息内容在容器中的水平对齐方式 */
+  margin-top: 10px; /* 可选：调整消息之间的垂直间距 */
+}
+
+.chatMessage-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* 可选：调整消息头部与消息内容之间的垂直间距 */
+}
+
+.chatMessage-header-left {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+}
+
+.container-aside {
+  width: 250px; /* 调整侧边栏的宽度 */
+}
+
+.chatUser-selected-card {
+  background-color: #e6f7ff; /* 可选：设置选中卡片的背景颜色 */
+}
+
+.selected-chatUser {
+  display: flex;
+  align-items: center;
+}
+
+.chatUser-image {
+  width: 40px; /* 调整用户头像的宽度 */
+  height: 40px; /* 调整用户头像的高度 */
+  margin-right: 10px; /* 可选：调整用户头像与用户信息之间的水平间距 */
+}
+
+.chatUser-info {
+  flex: 1;
+}
+
+.chatUser-name {
+  font-weight: bold; /* 可选：加粗显示用户名 */
+}
+
+.chatUser-message {
+  margin-top: 5px; /* 可选：调整消息内容与用户名之间的垂直间距 */
+  padding: 8px; /* 可选：调整消息内容的内边距 */
+  border-radius: 5px; /* 可选：设置消息内容的圆角边框 */
+  max-width: 70%; /* 可选：限制消息内容的最大宽度 */
+  margin-top: 5px; /* 调整消息内容与发送者名称的垂直间距 */
+}
+
+.chatUser-selected-card {
+  background-color: #1f7ac947 !important;
+}
+
+.chatMessage-right {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 10px; /* 可选：调整消息之间的垂直间距 */
+}
+
+.chatMessage-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* 可选：调整消息头部与消息内容之间的垂直间距 */
+}
+
+.sender-image {
+  width: 32px; /* 调整发送者头像的宽度 */
+  height: 32px; /* 调整发送者头像的高度 */
+  margin-right: 10px; /* 可选：调整发送者头像与发送者名称之间的水平间距 */
+}
+
+.sender-content {
+  margin-bottom: 5px; /* 可选：调整发送者名称与消息内容之间的垂直间距 */
+}
+
+.sender-name {
+  font-weight: bold; /* 可选：加粗显示发送者名称 */
+}
+
+.sender-time {
+  color: #666; /* 可选：设置发送时间的颜色 */
+  font-size: 12px; /* 可选：调整发送时间的字体大小 */
+}
+
+.sender-message {
+  background-color: #e2f0cb; /* 可选：设置消息内容的背景颜色 */
+  padding: 8px; /* 可选：调整消息内容的内边距 */
+  border-radius: 5px; /* 可选：设置消息内容的圆角边框 */
+  max-width: 70%; /* 可选：限制消息内容的最大宽度 */
+  margin-top: 8px; /* 可选：调整消息内容与用户名之间的垂直间距 */
+}
+
+.selected-chatUser {
+  display: flex;
+  flex-direction: row !important;
+}
+
+.area-input {
+  width: 40%;
+}
+
+.img-dia {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
+.input-textarea {
+  width: 100%;
+  height: 90%;
+}
+
+.create-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.create-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-category {
+  margin-bottom: 20px;
+}
+
+.create-content {
+  margin-bottom: 20px;
+}
+
+.create-select {
+  margin-bottom: 20px;
+}
+
+.create-image {
+  margin-bottom: 20px;
+}
+
+.ml-1-w-20 {
+  width: 50px;
+}
+
+.user-message {
+  float: right;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.header-menu {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.input-parent {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-style {
+  width: 100%;
+  height: 40px;
+}
+
+.container-main {
+  width: 80%;
+  background-color: aliceblue;
+  height: 700px;
+  padding: 20px;
+}
+
+.custom-card {
+  width: 100%;
+}
+
+.drawer-style {
+  width: 400px;
+}
+
+.container-header {
+  padding: 20px;
+}
+
+.custom-card {
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card {
+  margin-bottom: 20px;
+  height: 100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  /* 添加相对定位 */
+}
+
+.custom-title {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.custom-publisher {
+  color: #888;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+}
+.chatUser-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-content {
+  margin-bottom: 10px;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+.custom-status {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 12px;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.task-cord {
+  width: 70%;
+  height: 850px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  align-items: center;
+}
+
+.task-info {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.task-status {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-image{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center
+}
+
+.task-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.task-description {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.task-address {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-address-card {
+  width: 400px;
+  height: 100px;
+}
+
+.task-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.task-createTime {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-dueTime {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info {
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-info-card {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-due {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.task-price-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-price {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.task-create {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+.user-task {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-task-tab {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.user-star-tab {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.user-task-tab > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.user-star-tab > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.user-task-tab > div > el-text {
+  font-size: 14px;
+  color: #333;
+}
+.user-star-tab > div > el-text {
+  font-size: 14px;
+  color: #333;
+}
+.user-task-tab > div > el-text:nth-child(2) {
+  font-size: 12px;
+  color: #999;
+}
+.user-star-tab > div > el-text:nth-child(3) {
+  font-size: 12px;
+  color: #999;
+}
+.category-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.category-title > el-link {
+  margin-left: 10px;
+}
+.category-title > el-link:last-child {
+  margin-right: 10px;
+}
+.container {
+  height: 500px;
+}
+
+.test-border {
+  height: 100%;
+}
+
+.aside {
+  height: 100%;
+}
+
+.main {
+  background-color: white;
+}
+
+.chat-header-info {
+  display: flex;
+  flex-direction: column;
+}
+.chat-item {
+  margin-top: 10px;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+}
+
+.chat-header.avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.tesk-details {
+  background-color: aliceblue;
+}
+
+.chat-box {
+  display: flex;
+  align-items: center;
+  /* 垂直居中对齐 */
+}
+
+.chat-box .input {
+  flex: 1;
+  margin-right: 3px;
+  /* 调整输入框和按钮之间的间距 */
+}
+
+.chat-box el-button {
+  height: 100%;
+  /* 设置按钮高度为父容器高度 */
+}
+
+.chat-content {
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-name {
+  color: #000000 !important;
+  font-size: 20px !important;
+}
+
+.header-id {
+  color: #666 !important;
+  font-size: 16px !important;
+}
+
+.header-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-title-name {
+  justify-content: center;
+  color: black !important;
+  font-size: large !important;
+}
+
+.header-price {
+  color: #d90d0d !important;
+  font-size: 25px !important;
+}
+
+.header-title-price {
+  font-size: 10px;
+  color: #666;
+}
+
+.main-image {
+  width: 1000px;
+  height: 400px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.main-post-Button {
+  width: 50%;
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.price-text el-text {
+  text-align: right;
+}
+
+.class-center {
+  width: 100%;
+  height: 150px;
+}
+
+.orders-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+  /* 通过负的 margin 值消除卡片之间的空隙 */
+}
+
+.orders-card {
+  height: 300px;
+  width: 400px;
+  margin: 10px;
+  /* 调整卡片之间的间距 */
+  border: 1px solid #ead9d99f;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.el-carousel__item h3 {
+  display: flex;
+  color: #475669;
+  opacity: 0.75;
+  line-height: 300px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+
+.footer-text {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.footer-text .info {
+  margin-left: 10px;
+}
+
+.message-card {
+  height: 800px;
+}
+
+/* 任务卡片整体样式 */
+.acc-tesk {
+  width: 70%;
+  border: 1px solid #c9b2b2;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 30px;
+  margin-left: 200px;
+}
+
+/* 任务信息部分布局 */
+.acc-taskInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+
+/* 任务信息文本样式 */
+.acc-teskMessage el-text {
+  font-weight: bold; /* 文字加粗 */
+  text-align: left; /* 左对齐 */
+}
+
+.acc-taskContent {
+  margin-left: 30px;
+}
+
+/* 用户信息部分布局 */
+.acc-userInfo {
+  margin-top: 10px; /* 调整与任务信息的间距 */
+}
+
+/* 用户头像样式 */
+.acc-userInfo el-avatar {
+  margin-right: 10px;
+}
+
+/* 用户昵称文本样式 */
+.acc-userInfo el-text {
+  font-weight: bold; /* 文字加粗 */
+  text-align: left; /* 左对齐 */
+}
+
+.acc-teskState {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.acc-taskTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px; /* 高度可以根据需要调整 */
+  background-color: #147a9a75; /* 浅蓝色背景 */
+}
+.acc-taskTitleText {
+  font-weight: bold;
+  color: #333; /* 文本颜色 */
+}
+
+.location-card {
+  width: 500px;
+  height: 300px;
+}
+
+.type-header {
+  margin-left: -50px;
+}
+
+.type-card-header {
+  display: flex;
+  margin-left: 60px;
+}
+
+.type-row {
+  margin-top: 7px;
+}
+
+.config-item {
+  width: 200px;
+}
+.config-container {
+  height: 700px;
+}
+
+.config-phone-1{
+  margin-left: 350px;
+  margin-top: 50px;
+}
+
+/*其他用户资料页面*/
+.other-info{
+  margin-left: 300px;
+  height: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.other-tesk{
+  margin-top: 10px;
+  margin-left: 300px;
+  height: 70%;
+  width: 100%;
+}
+.other-view{
+  height: 800px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.other-info-card{
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-left:50px;
+}
+
+.other-info-img{
+  width: 150px;
+  height: 150px;
+  margin-left: 30px;
+}
+
+.other-info-info{
+  margin-left: 20px;
+  margin-top:50px
+}
+
+.other-info-info-text{
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.other-tesk-card{
+  display: flex;
+}
+
+.other-tesk-card-user{
+  display: flex;
+  margin-left: -40px;
+}

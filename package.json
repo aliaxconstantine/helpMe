@@ -1,0 +1,49 @@
+{
+  "name": "vue-project",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check build-only",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@vueuse/core": "^10.4.1",
+    "axios": "^1.4.0",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1",
+    "element-plus": "^2.3.8",
+    "pinia": "^2.1.6",
+    "pinia-plugin-persist": "^1.0.0",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "vue": "^3.3.4",
+    "vue-amap": "^0.5.10",
+    "vue-axios": "^3.5.2",
+    "vue-router": "^4.2.4",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.0",
+    "@types/crypto-js": "^4.1.1",
+    "@types/node": "^18.17.12",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/tsconfig": "^0.4.0",
+    "npm-run-all": "^4.1.5",
+    "ts-loader": "^9.4.4",
+    "typescript": "~5.1.6",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.1",
+    "vite": "^4.4.6",
+    "vite-plugin-css-modules": "^0.0.1",
+    "vite-plugin-html": "^3.2.2",
+    "vue-loader": "^17.2.2",
+    "vue-template-compiler": "^2.7.14",
+    "vue-tsc": "^1.8.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
