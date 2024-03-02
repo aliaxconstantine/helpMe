@@ -1,7 +1,7 @@
 import axios, { type AxiosResponse } from "axios";
 import type { HttpResult } from "../pojos/TypeInclass";
 import { ElMessage } from "element-plus";
-import { userStore } from "../utils/role";
+import { userStore } from "../stores/role";
 
 export const errorLog = async (error: unknown) => {
   console.error("错误信息" + error);

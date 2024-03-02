@@ -1,9 +1,7 @@
-import { type Commit,useStore} from 'vuex';
+import { type Commit} from 'vuex';
 import { createStore } from 'vuex';
-import axios from "axios";
 import {loginGetToken} from '../apis/apis'
-import { url,errorLog, sendRequest } from '../apis/axiosRequest'
-import { userStore } from './role';
+import { userStore } from '../stores/role';
  
 interface AuthState {
   isAuthenticated: boolean;

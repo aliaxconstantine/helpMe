@@ -1,8 +1,5 @@
 <template>
     <div class="main">
-        <Suspense>
-            <HeaderView :ismain="false"></HeaderView>
-        </Suspense>
         <div v-if="isPublish">
             <el-card class="acc-tesk" shadow="never">
                 <div>
@@ -119,7 +116,8 @@
                     </div>
                     <div>
                         <el-card class="location-card">
-                            <TaskLocationView v-if="task?.x != undefined && task?.y != undefined" :x="task?.x" :y="task?.y" />
+                            <TaskLocationView v-if="task?.x != undefined && task?.y != undefined" :x="task?.x"
+                                :y="task?.y" />
                         </el-card>
                     </div>
                     <div class="acc-userInfo">
@@ -149,18 +147,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, toRefs, onMounted, onUnmounted } from 'vue';
-import type { TUser, Task, OtherUserFrom } from '@/pojos/TypeInclass';
-import { getTask, getOtherUser, getTypeTasks, getTaskTime,submitTask } from '@/apis/apis';
-import { routerTeskView,handleAvatarClick } from '@/apis/routeApis';
+import { submitTask } from '@/apis/apis';
+import { useUserTask } from '@/composables/useUserTask/useUserTask';
+import { routerTeskView, handleAvatarClick } from '@/apis/routeApis';
 import picturdLoadView from "../views/picture/pictureLoadView.vue"
-import AreaLocation from './AreaLocation.vue';
-import type { TaskItem, TaskTime } from '@/pojos/Typeimpl';
-import { userStore } from '@/utils/role';
-import HeaderView from './HeaderView.vue';
 import { getType, formatToYMDHM } from '@/utils/dataUtils'
 import TaskLocationView from './taskLocationView.vue';
-import router from '@/router';
 const props = defineProps({
     teskid: {
         type: Number,
@@ -172,10 +164,8 @@ const props = defineProps({
     }
 })
 
-const task = ref<TaskItem>()
 const isPublish = props.isPublisher === 1
-const publish = ref<OtherUserFrom>()
-const taskTime = ref<TaskTime>()
+const { task, taskTime, publish } = useUserTask(props.teskid)
 
 const callPublisher = (id: number) => {
     routerTeskView('/message', id)
@@ -196,36 +186,23 @@ const getPrgress = () => {
 
 const confirmTask = () => {
     //转换到付款界面
-    
+
 }
 
 const uploadPictures = async () => {
     //上传图片
-    if (task.value != null && task.value.id!= null)  {
+    if (task.value != null && task.value.id != null) {
         const flag = await submitTask(task.value.id, task.value.progress) as boolean
     }
     else {
         alert("未知错误")
     }
 }
-
-
-
-const init = async () => {
-    task.value = await getTask(props.teskid) as Task
-    if (task.value != null) {
-        if (task.value.assigneeId != undefined && task.value.id != null) {
-            publish.value = await getOtherUser(userStore().userId) as OtherUserFrom
-            taskTime.value = await getTaskTime(task.value.id) as TaskTime
-        }
-    }
-}
-init()
 </script>
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 
 .main {
     background-color: aliceblue;
 }
-</style>@/utils/apis@/pojos/TypeInclass@/pojos/Typeimpl
+</style>

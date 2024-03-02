@@ -1,24 +1,12 @@
 <script setup lang="ts">
-import { getPageTasks } from '@/apis/apis'
 import { routerTeskView } from '@/apis/routeApis'
-import { type Task } from "@/pojos/TypeInclass"
-import { ref } from 'vue';
+import { useTask } from '@/composables/useTask/useTask'
+const { taskPageList } = useTask();
 
 
-const props = defineProps({
-    ismain: {
-        type: Boolean,
-        required: true,
-    },
-});
-
-const datalist = ref(await getPageTasks(1) as Task[]);
-const openTask = (id:number | undefined) =>{
-    routerTeskView('tesk', id)
-};
 </script>
 <template>
-    <el-card v-if="props.ismain" shadow="never">
+    <el-card shadow="never">
         <div class="class-center">
             <el-carousel trigger="click" height="150px">
                 <el-carousel-item v-for="item in 4" :key="item">
@@ -27,12 +15,11 @@ const openTask = (id:number | undefined) =>{
             </el-carousel>
         </div>
     </el-card>
-
     <el-card shadow="never">
         <el-scrollbar height="800px">
             <div class="orders-row">
-                <el-card class="orders-card" v-if="datalist.length > 0" v-for="item in datalist" :key="item.id" shadow="hover"
-                    @click="openTask(item.id)">
+                <el-card class="orders-card" v-for="item in taskPageList" :key="item.id" shadow="hover"
+                    @click="routerTeskView('tesk', item.id)">
                     <el-container>
                         <el-main>
                             <el-image :src="item.imageUrl" style="width: 300px; height: 150px" fit="cover"></el-image>
@@ -55,6 +42,5 @@ const openTask = (id:number | undefined) =>{
 
   
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 </style>
-../utils/apis../pojos/TypeInclass

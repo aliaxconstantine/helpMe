@@ -2,13 +2,13 @@
 import { onMounted, ref } from 'vue'
 import HeaderView from '@/views/Main/HeaderView.vue';
 import TeskView from '@/views/Main/TeskView.vue';
-import { getTask, getTaskChat, sendTaskMessage,  } from "@/apis/apis"
-import{handleAvatarClick} from '@/apis/routeApis'
+import { getTask, getTaskChat, sendTaskMessage, } from "@/apis/apis"
+import { handleAvatarClick } from '@/apis/routeApis'
 import { type Task, type TUser } from "@/pojos/TypeInclass"
 import { errorLog } from '@/apis/axiosRequest'
-import { userStore } from "@/utils/role"
+import { userStore } from "@/stores/role"
 import { deleteTask } from '@/apis/apis'
-import { routerView,routerTeskView} from '@/apis/routeApis';
+import { routerView, routerTeskView } from '@/apis/routeApis';
 import { ElMessageBox } from 'element-plus';
 import { type TaskItem, TaskMessageImpl } from '@/pojos/Typeimpl';
 import { getTimeElapsedString } from '@/utils/dataUtils';
@@ -149,79 +149,65 @@ const getTime = (date: string | undefined) => {
 </script>
 
 <template>
-    <body class="tesk-details">
-        <el-skeleton :row="20" v-if="isLoading" animated />
-        <div v-else>
-            <Suspense>
-                <HeaderView :ismain="false"></HeaderView>
-            </Suspense>
-            <el-main>
-                <el-card shadow="never">
-                    <el-container>
-                        <el-header>
-                            <div class="header-container">
-                                <el-avatar :src="teskUser?.image" @click="handleAvatarClick(teskUser?.id)"></el-avatar>
-                                <div class="header-info">
-                                    <el-text class="header-name">{{ teskUser.name }}</el-text>
-                                    <el-text class="header-id">no:{{ teskUser.id }}</el-text>
-                                </div>
-                            </div>
-                            <div class="header-title">
-                                <el-text class="header-title-name">{{ tesk?.name }}</el-text>
-                                <div>
-                                    <el-text class="header-title-price">酬金：￥</el-text>
-                                    <el-text class="header-price">{{ tesk?.price }}</el-text>
-                                </div>
-                            </div>
-                        </el-header>
-                        <el-main>
-                            <el-text>{{ tesk?.description }}</el-text>
-                            <div class="main-image" v-for="image in gettaskUrl(tesk?.imageUrl)">
-                                <el-image fit="contain" :src="image"></el-image>
-                            </div>
-                        </el-main>
-                        <el-text class="main-post-Button" v-if="tesk?.assigneeId == users.userId">已承接该任务</el-text>
-                        <el-button class="main-post-Button"
-                            v-if="ifself(Number(tesk?.initiatorId), Number(tesk?.assigneeId))"
-                            @click="teskPost(tesk?.id)">接受任务</el-button>
-                        <el-button class="main-post-Button" v-if="tesk?.initiatorId == users.userId"
-                            @click="deTesk(tesk?.id)">撤销任务</el-button>
-                    </el-container>
-                </el-card>
-
-                <el-card shadow="never">
-                    <div class="chat-box">
-                        <el-avatar :src="users.userImage"></el-avatar>
-                        <el-input v-model="teskChat" placeholder="留下你的留言吧~" class="input"></el-input>
-                        <el-button type="primary" @click="sendMessage(teskChat)">发送</el-button>
-                    </div>
-
-                    <div v-for=" chat in chatList" :key="chat.userName" class="chat-item">
-                        <div class="chat-header">
-                            <el-avatar :src="chat.userIcon"></el-avatar>
-                            <div class="chat-header-info">
-                                <el-text style=" color: #000; font-size: 16px;"> {{ chat.userName }}</el-text>
-                                <el-text style="color: #999 ; font-size: 12px;">&nbsp;&nbsp;&nbsp;{{
-                                    getTime(chat.createTime) }}</el-text>
-                            </div>
-                        </div>
-                        <div class="chat-content">
-                            <el-text>{{ chat.message }}</el-text>
+    <el-skeleton :row="50" v-if="isLoading" animated />
+    <div v-else>
+        <el-card shadow="never">
+            <el-container>
+                <el-header>
+                    <div class="header-container">
+                        <el-avatar :src="teskUser?.image" @click="handleAvatarClick(teskUser?.id)"></el-avatar>
+                        <div class="header-info">
+                            <el-text class="header-name">{{ teskUser.name }}</el-text>
+                            <el-text class="header-id">no:{{ teskUser.id }}</el-text>
                         </div>
                     </div>
-                </el-card>
-                <Suspense>
-                    <TeskView :ismain="false"></TeskView>
-                </Suspense>
-            </el-main>
-        </div>
-    </body>
+                    <div class="header-title">
+                        <el-text class="header-title-name">{{ tesk?.name }}</el-text>
+                        <div>
+                            <el-text class="header-title-price">酬金：￥</el-text>
+                            <el-text class="header-price">{{ tesk?.price }}</el-text>
+                        </div>
+                    </div>
+                </el-header>
+                <el-main>
+                    <el-text>{{ tesk?.description }}</el-text>
+                    <div class="main-image" v-for="image in gettaskUrl(tesk?.imageUrl)">
+                        <el-image fit="contain" :src="image"></el-image>
+                    </div>
+                </el-main>
+                <el-text class="main-post-Button" v-if="tesk?.assigneeId == users.userId">已承接该任务</el-text>
+                <el-button class="main-post-Button" v-if="ifself(Number(tesk?.initiatorId), Number(tesk?.assigneeId))"
+                    @click="teskPost(tesk?.id)">接受任务</el-button>
+                <el-button class="main-post-Button" v-if="tesk?.initiatorId == users.userId"
+                    @click="deTesk(tesk?.id)">撤销任务</el-button>
+            </el-container>
+        </el-card>
+
+        <el-card shadow="never">
+            <div class="chat-box">
+                <el-avatar :src="users.userImage"></el-avatar>
+                <el-input v-model="teskChat" placeholder="留下你的留言吧~" class="input"></el-input>
+                <el-button type="primary" @click="sendMessage(teskChat)">发送</el-button>
+            </div>
+
+            <div v-for=" chat in chatList" :key="chat.userName" class="chat-item">
+                <div class="chat-header">
+                    <el-avatar :src="chat.userIcon"></el-avatar>
+                    <div class="chat-header-info">
+                        <el-text style=" color: #000; font-size: 16px;"> {{ chat.userName }}</el-text>
+                        <el-text style="color: #999 ; font-size: 12px;">&nbsp;&nbsp;&nbsp;{{
+                            getTime(chat.createTime) }}</el-text>
+                    </div>
+                </div>
+                <div class="chat-content">
+                    <el-text>{{ chat.message }}</el-text>
+                </div>
+            </div>
+        </el-card>
+    </div>
 </template>
 
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 </style>
 
-
-
-@/apis/axiosRequest../utils/apis../utils/apis../utils/apis../pojos/TypeInclass@/pojos/Typeimpl

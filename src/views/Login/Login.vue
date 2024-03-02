@@ -53,7 +53,6 @@
           </el-main>
         </el-tab-pane>
       </el-tabs>
-
     </el-container>
   </el-card>
 </template>
@@ -66,7 +65,7 @@ import {routerView} from '@/apis/routeApis'
 import { type TUser, type UserFrom, type RegisterForm, type HttpResult } from "@/pojos/TypeInclass"
 import { type UserInfoFrom } from "@/pojos/Typeimpl";
 import { store } from '@/utils/auth';
-import { userStore } from '@/utils/role';
+import { userStore } from '@/stores/role';
 
 
 const ustore = userStore()
@@ -252,5 +251,3 @@ const register = async (user: RegisterForm) => {
   height: 120%;
 }
 </style>
-
-../utils/apis../pojos/TypeInclass../pojos/Typeimpl

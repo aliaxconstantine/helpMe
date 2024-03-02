@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import login from "../components/Login.vue"
+import login from "@/views/Login/Login.vue"
 </script>
 <template>
     <div class="back">
@@ -13,7 +13,7 @@ import login from "../components/Login.vue"
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url("icons/login_background.png");
+  background-image: url('../../components/icons/login_background.png');
   background-size: 100%;
   background-repeat: no-repeat; 
   background-position: center; 

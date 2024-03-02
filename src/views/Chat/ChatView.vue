@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { userStore } from "@/utils/role"
+import { userStore } from '@/stores/role'
 import { ref } from "vue"
 import HeaderView from "@/HeaderView.vue";
 import type { TUser, Communication, Friend } from "@/pojos/TypeInclass";
@@ -91,9 +91,6 @@ const addEmoji = (e: string) => {
 
 </script>
 <template>
-    <Suspense>
-        <HeaderView :ismain="false"></HeaderView>
-    </Suspense>
     <el-card shadow="never" class="message-card">
         <el-container class="container">
             <div class="container-aside">
@@ -162,4 +159,4 @@ const addEmoji = (e: string) => {
   
 <style scoped>
 @import '../assets/bask.css';
-</style>@/apis/axiosRequest@/utils/apis@/pojos/TypeInclass@/pojos/Typeimpl
+</style>@/apis/axiosRequest@/utils/apis@/pojos/TypeInclass@/pojos/Typeimpl@/stors/role

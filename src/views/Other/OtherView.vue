@@ -1,7 +1,4 @@
 <template>
-    <Suspense>
-        <HeaderView :ismain="false"></HeaderView>
-    </Suspense>
     <div class="other-view">
         <div class="other-info">
             <el-card style="height: 100%; width: 80%;">
@@ -96,7 +93,7 @@ import { ref } from "vue";
 import { getType } from '@/utils/dataUtils';
 import {routerUserTaskView, routerView, routerTeskView,} from '@/apis/routeApis';
 import { getOtherUserTasks, getOtherUserStars, getOtherUser, addFriend, getFriends, removeFriend } from '@/apis/apis';
-import { userStore } from '@/utils/role';
+import { userStore } from '@/stores/role';
 import { onMounted } from "vue";
 const props = defineProps({
     otherUserId: {
@@ -171,4 +168,4 @@ onMounted(async () => {
 
 
 </script>
-<style scoped>@import '../assets/bask.css';</style>../utils/apis../pojos/Typeimpl../pojos/Typeimpl
+<style scoped>@import '../../assets/bask.css';</style>../utils/apis../pojos/Typeimpl../pojos/Typeimpl@/stors/role

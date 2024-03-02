@@ -1,7 +1,4 @@
 <template>
-    <Suspense>
-        <HeaderView :ismain="false"></HeaderView>
-    </Suspense>
     <div class="main">
         <el-card class="card">
             <el-card shadow="never">
@@ -59,7 +56,7 @@ import { onMounted, ref } from "vue"
 import HeaderView from "./HeaderView.vue";
 import type { TaskItem } from "@/pojos/Typeimpl";
 import { getTaskTags, getTaskByCategory, getTaskByKeyword } from "@/apis/apis";
-import {routerTeskView,handleAvatarClick} from "@/apis/routeApis";
+import { routerTeskView, handleAvatarClick } from "@/apis/routeApis";
 import type { TaskCategory } from "@/pojos/TypeInclass";
 const props = defineProps({
     select: {
@@ -114,7 +111,7 @@ const selectBykey = async (key: string, num: number) => {
 </script>
   
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 
 .card {
     width: 80%;

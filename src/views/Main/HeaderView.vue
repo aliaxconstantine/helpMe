@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {  getUserTasks, } from '@/apis/apis'
-import {routerStringView, routerView, routerTeskView, routerUserTaskView, routerKeyView} from '@/apis/routeApis'
+import { getUserTasks, } from '@/apis/apis'
+import { routerStringView, routerView, routerTeskView, routerUserTaskView, routerKeyView } from '@/apis/routeApis'
 import { type Task } from "@/pojos/TypeInclass"
 import { checkLoginStatus, router, } from '@/router/index'
-import { userStore } from '@/utils/role'
+import { userStore } from '@/stores/role'
 import { store } from '@/utils/auth'
 import { errorLog } from '@/apis/axiosRequest'
 import { getType } from '@/utils/dataUtils'
@@ -23,12 +23,12 @@ const istesks = ref(false)
 
 const handleSelectClick = async function () {
     try {
-        if(selectMainKey.value == "" || selectMainKey.value == null){
+        if (selectMainKey.value == "" || selectMainKey.value == null) {
             ElMessage.error("您还没有输入搜索内容")
             return
         }
         // 处理搜索事件的逻辑
-        routerKeyView('search',selectMainKey.value)
+        routerKeyView('search', selectMainKey.value)
     } catch (error) {
         errorLog(error)
     }
@@ -40,12 +40,12 @@ const pageSize = 8; // 每页显示的任务数量
 //打开用户任务清单
 const openDraw = () => {
     if (isAuthenticated) {
-        if (userStore().userId == undefined) {
-            routerView("loginback")
-            return
-        }
         isDrawerOpen.value = true
         handlePageChange(1);
+    }
+    else {
+        routerView("loginback")
+        return
     }
 }
 // 处理分页点击事件
@@ -86,7 +86,7 @@ const showDropdown = () => {
 }
 
 const chatRoute = (otherId: number) => {
-    if(otherId == null){
+    if (otherId == null) {
         routerView("loginback")
     }
     routerTeskView("message", otherId)
@@ -103,7 +103,7 @@ const chatRoute = (otherId: number) => {
         <div class="flex-grow"></div>
         <el-menu-item index="1" @click="routerView('')">首页</el-menu-item>
         <el-menu-item index="2">活动</el-menu-item>
-        <el-menu-item index="4" @click="routerKeyView('search','all')">分类</el-menu-item>
+        <el-menu-item index="4" @click="routerKeyView('search', 'all')">分类</el-menu-item>
         <div class="flex-grow"></div>
         <div class="input-parent">
             <el-input v-model="selectMainKey" placeholder="请输入需要搜索的对象" class="input-style">
@@ -113,7 +113,6 @@ const chatRoute = (otherId: number) => {
             </el-input>
         </div>
         <div class="flex-grow"></div>
-
         <el-popover :visible="dropdownVisible" class="el-popover__popper" placement="top" :width="160">
             <template #reference>
                 <el-avatar v-if="isAuthenticated" @click="showDropdown" icon="UserFilled" />
@@ -165,5 +164,5 @@ const chatRoute = (otherId: number) => {
 </template>
 
 <style scoped>
-@import '../assets/bask.css';
-</style>@/apis/axiosRequest../utils/apis../pojos/TypeInclass
+@import '../../assets/bask.css';
+</style>

@@ -1,7 +1,4 @@
 <template>
-    <Suspense>
-        <HeaderView :ismain="false"></HeaderView>
-    </Suspense>
     <el-card class="task-cord">
         <div class="task-info">
             <div class="task-image">
@@ -113,7 +110,7 @@ const rejectTask = () => {
 </script>
   
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 
 .task-button {
     display: flex;

@@ -348,7 +348,7 @@ const handleDelete = (item: any) => {
 
 </script>
 <style>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 </style>
 
 
