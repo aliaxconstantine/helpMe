@@ -24,12 +24,12 @@
                         <el-text>简介:{{ otherUser?.userInfo?.desc }}</el-text>
                     </div>
                     <div>
-                        <el-button v-if="isFriend==false" type="primary" @click="clickAddFriend">添加好友</el-button>
-                        <el-button v-if="isFriend==true" type="primary"
+                        <el-button v-if="isFriend == false" type="primary" @click="clickAddFriend">添加好友</el-button>
+                        <el-button v-if="isFriend == true" type="primary"
                             @click="routerTeskView('message', otherUser?.id)"><el-icon>
                                 <ChatRound />
                             </el-icon></el-button>
-                        <el-button v-if="isFriend==true" type="danger" @click="clickDeFriend">移除好友</el-button>
+                        <el-button v-if="isFriend == true" type="danger" @click="clickDeFriend">移除好友</el-button>
                     </div>
                 </div>
             </el-card>
@@ -91,7 +91,7 @@ import HeaderView from './HeaderView.vue';
 import { type TaskItem, type friendInfo } from '@/pojos/Typeimpl';
 import { ref } from "vue";
 import { getType } from '@/utils/dataUtils';
-import {routerUserTaskView, routerView, routerTeskView,} from '@/apis/routeApis';
+import { routerUserTaskView, routerView, routerTeskView, } from '@/apis/routeApis';
 import { getOtherUserTasks, getOtherUserStars, getOtherUser, addFriend, getFriends, removeFriend } from '@/apis/apis';
 import { userStore } from '@/stores/role';
 import { onMounted } from "vue";
@@ -139,33 +139,32 @@ const clickDeFriend = async () => {
 }
 
 onMounted(async () => {
+    const friendInfo = await getFriends() as friendInfo[]
+
+    //检查如果是本人
+    if (props.otherUserId == userStore().userId) {
+        routerView('state')
+
+    }
     //获取用户资料
     if (props.otherUserId != undefined && props.otherUserId != userStore().userId) {
         otherUser.value = await getOtherUser(props.otherUserId) as OtherUser
         tasks.value = await getOtherUserTasks(props.otherUserId, 1, 1) as TaskItem[]
         stars.value = await getOtherUserStars(props.otherUserId, 1) as UserStar[]
     }
-    const friendInfo = await getFriends() as friendInfo[]
     //检查是不是好友
     friendInfo.forEach(friend => {
         if (friend.friendId === props.otherUserId) {
-            console.log(friend)
             //是好友
             isFriend.value = true
         }
     })
-    console.log(isFriend.value)
-    
-    //检查如果是本人
-    if (props.otherUserId == userStore().userId) {
-        routerView('state')
-    }
 
-    //不是好友
-    isFriend.value = false
 })
 
 
 
 </script>
-<style scoped>@import '../../assets/bask.css';</style>../utils/apis../pojos/Typeimpl../pojos/Typeimpl@/stors/role
+<style scoped>
+@import '../../assets/bask.css';
+</style>../utils/apis../pojos/Typeimpl../pojos/Typeimpl@/stors/role

@@ -11,7 +11,7 @@ document.title = "主页"
   <Suspense>
     <HeaderView :ismain="true"></HeaderView>
   </Suspense>
-  <TeskViewVue></TeskViewVue>
+  <RouterView :key="$route.fullPath"></RouterView>
   <FooterView></FooterView>
 </template>
 
