@@ -14,10 +14,11 @@ const props = defineProps({
         required: true
     }
 })
-const user = userStore()
+const selfUser = userStore()
 const openEnjoydrow = ref(false)
 const CUserId = ref<Number>(props.id)
 const chat = ref<string>('')
+const oldChatUser = ref<friendInfo>()
 const chatUser = ref<friendInfo>()
 const chatList = ref(Array<Communication>())
 const chatUserList = ref(Array<friendInfo>())
@@ -50,33 +51,33 @@ const sendMessage = async (message: string, chatUserid: number | undefined) => {
         errorLog(error)
     }
 }
-
 onMounted(async () => {
     try {
         CUserId.value = 0
         chatUserList.value = await getFriends() as friendInfo[]
+        // 获取聊天信息
         if (props.id != 0 && props.id != undefined) {
-            const user = chatUserList.value[props.id] as friendInfo
-            if (user.friendId != undefined && CUserId.value != undefined) {
-                chatUser.value = user
-                CUserId.value = user.friendId
-                chatList.value = await getFriendMessages(user.friendId) as Communication[]
+            const chatFriend = chatUserList.value[props.id] as friendInfo // 修改变量名
+            if (chatFriend.friendId != undefined && CUserId.value != undefined) {
+                chatUser.value = chatFriend // 使用新变量名
+                CUserId.value = chatFriend.friendId
+                chatList.value = await getFriendMessages(chatFriend.friendId) as Communication[]
             }
         }
         if (chatUserList.value.length > 0) {
-            const user = chatUserList.value[0] as friendInfo
-            if (user.friendId != undefined && CUserId.value != undefined) {
-                chatUser.value = user
-                CUserId.value = user.friendId
-                chatList.value = await getFriendMessages(user.friendId) as Communication[]
+            const chatFriend = chatUserList.value[0] as friendInfo // 修改变量名
+            if (chatFriend.friendId != undefined && CUserId.value != undefined) {
+                chatUser.value = chatFriend // 使用新变量名
+                CUserId.value = chatFriend.friendId
+                chatList.value = await getFriendMessages(chatFriend.friendId) as Communication[]
             }
         }
 
     } catch (error) {
         errorLog(error)
     }
-}
-)
+})
+
 const isSelected = () => {
     if (chatUser.value == undefined) {
         return false
@@ -95,13 +96,13 @@ const addEmoji = (e: string) => {
         <el-container class="container">
             <div class="container-aside">
                 <el-scrollbar>
-                    <el-card v-for="user in chatUserList" @click="selectChatUser(user)" shadow="hover"
+                    <el-card v-for="u in chatUserList" @click="selectChatUser(u)" shadow="hover"
                         :class="[isSelected() ? 'chatUser-selected-card' : 'chatUser-card']">
                         <div class="selected-chatUser">
-                            <el-avatar :src="user.userIcon" class="chatUser-image"></el-avatar>
+                            <el-avatar :src="u.userIcon" class="chatUser-image"></el-avatar>
                             <div class="chatUser-info">
                                 <el-text class="chatUser-name">
-                                    {{ user.userName }}
+                                    {{ u.userName }}
                                 </el-text>
                                 <el-text class="chatUser-message">
                                     {{ chatList[0]?.content }}
@@ -115,7 +116,8 @@ const addEmoji = (e: string) => {
                 <el-scrollbar>
                     <el-card class="main-card" shadow="never">
                         <div v-for="chat in chatList" class="chatMessage-card">
-                            <div v-if="chat.senderUserId != user.userId" class="chatMessage-left">
+                            <!--如果是好友发送的消息-->
+                            <div v-if="chat.senderUserId != selfUser.userId" class="chatMessage-left">
                                 <div class="chatMessage-header">
                                     <div class="chatMessage-header-left">
                                         <el-avatar class="sender-image" :src="chatUser?.userIcon"></el-avatar>
@@ -127,11 +129,12 @@ const addEmoji = (e: string) => {
                                     <el-text class="sender-message">{{ chat.content }}</el-text>
                                 </div>
                             </div>
+                             <!--如果是自己发送的消息-->
                             <div v-else class="chatMessage-right">
                                 <div class="chatMessage-header">
                                     <div class="chatMessage-header-left">
-                                        <el-avatar class="sender-image" :src="user.userImage"></el-avatar>
-                                        <el-text class="sender-name">{{ user.userName }}</el-text>
+                                        <el-avatar class="sender-image" :src="selfUser.userImage"></el-avatar>
+                                        <el-text class="sender-name">{{ selfUser.userName }}</el-text>
                                     </div>
                                     <el-text class="sender-time">{{ getTimeElapsedString(chat.data) }}</el-text>
                                 </div>
