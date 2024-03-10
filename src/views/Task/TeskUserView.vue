@@ -62,7 +62,8 @@
                     </div>
                     <div>
                         <el-text tag="b">当前完成进度</el-text>
-                        <picturdLoadView :pictures="getPrgress()"></picturdLoadView>
+                        
+                        <el-image v-for="picture in pictures" :src="picture"></el-image>
                     </div>
                     <el-button @click="confirmTask">确认任务完成</el-button>
                 </div>
@@ -136,10 +137,10 @@
                     </div>
                     <div>
                         <el-text tag="b">上传完成图片</el-text>
-                        <picturdLoadView :pictures="getPrgress()"></picturdLoadView>
+                        <picturdLoadView :pictures="pictures"></picturdLoadView>
                     </div>
                     <div>
-                        <el-button type="primary" @click="uploadPictures">上传完成图片</el-button>
+                        <el-button type="primary" @click="okTask">提交进度</el-button>
                     </div>
                 </div>
             </el-card>
@@ -149,10 +150,14 @@
 <script setup lang="ts">
 import { submitTask } from '@/apis/apis';
 import { useUserTask } from '@/composables/useUserTask/useUserTask';
-import { routerTeskView, handleAvatarClick } from '@/apis/routeApis';
-import picturdLoadView from "../views/picture/pictureLoadView.vue"
+import { routerTeskView, handleAvatarClick, routerView } from '@/apis/routeApis';
+import picturdLoadView from "@/views/picture/pictureLoadView.vue"
+import { TaskImages } from "@/pojos/Typeimpl";
 import { getType, formatToYMDHM } from '@/utils/dataUtils'
-import TaskLocationView from './taskLocationView.vue';
+import TaskLocationView from '@/views/Location/taskLocationView.vue';
+import { onMounted, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { on } from 'events';
 const props = defineProps({
     teskid: {
         type: Number,
@@ -165,23 +170,33 @@ const props = defineProps({
 })
 
 const isPublish = props.isPublisher === 1
-const { task, taskTime, publish } = useUserTask(props.teskid)
+const pictures = ref<string[]>([])
+const { task, taskTime, publish, submitTaskImage } = useUserTask(props.teskid, props.isPublisher == 1)
+
+onMounted(() => {
+    if (submitTaskImage.value) {
+        submitTaskImage.value.forEach((item) => {
+            if (item.imageUrl) {
+                pictures.value.push(item.imageUrl)
+            }
+        })
+    }
+})
+
 
 const callPublisher = (id: number) => {
     routerTeskView('/message', id)
 }
 
 const getPrgress = () => {
-    if (task.value && task.value.progress) {
-        const urls = task.value.progress.split(",").filter(item => {
-            // 使用正则表达式匹配URL
-            const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-            return urlPattern.test(item);
-        });
-        return urls;
-    } else {
-        return [];
-    }
+    submitTaskImage.value?.forEach(
+        (item) => {
+            if (item.imageUrl) {
+                pictures.value.push(item.imageUrl);
+            }
+        }
+    )
+    return pictures.value
 }
 
 const confirmTask = () => {
@@ -189,15 +204,17 @@ const confirmTask = () => {
 
 }
 
-const uploadPictures = async () => {
-    //上传图片
-    if (task.value != null && task.value.id != null) {
-        const flag = await submitTask(task.value.id, task.value.progress) as boolean
-    }
-    else {
-        alert("未知错误")
+const okTask = async () => {
+    const flag = await submitTask(pictures.value, props.teskid) as boolean;
+    if (flag) {
+        //提交成功，返回主页
+        ElMessage.success('提交成功');
+        //返回主页
+        routerView('');
     }
 }
+
+
 </script>
 <style scoped>
 @import '../../assets/bask.css';

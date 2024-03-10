@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": " vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -20,6 +20,7 @@
     "pinia": "^2.1.6",
     "pinia-plugin-persist": "^1.0.0",
     "pinia-plugin-persistedstate": "^3.2.0",
+    "process": "^0.11.10",
     "vue": "^3.3.4",
     "vue-amap": "^0.5.10",
     "vue-axios": "^3.5.2",
@@ -29,9 +30,10 @@
   "devDependencies": {
     "@tsconfig/node18": "^18.2.0",
     "@types/crypto-js": "^4.1.1",
-    "@types/node": "^18.17.12",
+    "@types/node": "^18.19.22",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/tsconfig": "^0.4.0",
+    "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5",
     "ts-loader": "^9.4.4",
     "typescript": "~5.1.6",

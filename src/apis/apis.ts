@@ -1,7 +1,8 @@
 import { type RegisterForm, type Task, type UserFrom } from "../pojos/TypeInclass";
-import type { TaskFrom, UserInfo } from "../pojos/Typeimpl";
+import type { TaskFrom, TaskImages, UserInfo } from "../pojos/Typeimpl";
 import { sendRequest, errorLog } from "./axiosRequest";
 import { Message, TaskMessageImpl } from "../pojos/Typeimpl";
+import axios, { type AxiosResponse } from "axios";
 /**
  * 注册用户
  * @param {RegisterForm} user - 用户信息
@@ -43,13 +44,19 @@ export const getSelfInfo = async () => {
 };
 
 /**
- * 获取用户自身任务
+ * 获取用户自身接收的任务
  * @param {number} pageNum - 页码
  * @returns {Promise<any>} 返回任务列表
  */
 export const getUserTasks = async (pageNum: number) => {
   return await sendRequest("GET", `/user/getAcceptedTasks?pageNum=${pageNum}`);
 };
+//获取用户发布的任务
+export const getUserPublishedTasks = async (pageNum: number) => {
+  return await sendRequest("GET", `/user/getPublishedTasks?pageNum=${pageNum}`);
+};
+
+
 /**
  * 删除任务
  * @param {number} taskId - 任务ID
@@ -236,15 +243,14 @@ export const sendTaskMessage = async (
 
 /**
  * 获取用户方位附近的任务
- * @param {number} publisherId - 发布者ID
- * @param {number} taskId - 任务ID
- * @returns {Promise<any>} 返回任务信息
+ * @param {number} pageNum - 页码
  */
 export const getLocationUserTasks = async (
-  publisherId: number,
-  taskId: number
+  pageNum:Number =1,
 ) => {
-  return await sendRequest("GET", "/TeskPublisher ", { publisherId, taskId });
+  //获取用户位置
+
+  return await sendRequest("GET", `/tasks?x=1&y=1&page=${pageNum}`);
 };
 
 /**
@@ -347,11 +353,22 @@ export const uploadFile = async (file: File) => {
  * @param {string} img - 图片地址
  * @returns {Promise<any>} 返回上传结果
  */
-export const submitTask = async (id: number, img: string) => {
+export const submitTask = async (list: string[],taskId: number) => {
   const res = await sendRequest(
     "POST",
-    `/task/progress?taskId=${id}&progress=${img}`
+    `/task/progress?taskId=${taskId}`
+    ,
+    list,
   );
+  return res;
+};
+
+/**
+ * 获取全部任务标签
+ * @returns {Promise<any>} 返回任务标签
+ */
+export const getTasksImages = async (id: number) => {
+  const res = await sendRequest("GET", `/task/tasks/progress?taskId=${id}`);
   return res;
 };
 
@@ -403,4 +420,24 @@ export const getOtherUserStars = async (userId: number, pageNum: number) => {
 //上传头像
 export const updateAavatar = async (file: string) => {
   return await sendRequest("POST", `/user/avatar?url=${file}`);
+};
+
+//给任务评价点赞
+export const starTask = async (messageId: number) => {
+  return await sendRequest("POST", `/taskMessage/star?messageId=${messageId}`);
+};
+
+//给任务取消点赞
+export const cancelStarTask = async (messageId: number) => {
+  return await sendRequest("DELETE", `/taskMessage/star?messageId=${messageId}`);
+};
+
+//查询任务点赞数
+export const getMessageStar = async (messageId: number) => {
+  return await sendRequest("GET", `/taskMessage/star?taskId=${messageId}`);
+};
+
+//获取任务评价点赞与否
+export const getMessaegStarStatus = async (messageId: number) => {
+  return await sendRequest("GET", `/taskMessage/star/status?messageId=${messageId}/status`);
 };

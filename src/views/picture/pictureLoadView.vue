@@ -14,6 +14,7 @@ const props = defineProps({
 const file = ref();
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
+console.log(props.pictures)
 
 const beforeAvatarUpload = (rawFile: File): boolean => {
     try {

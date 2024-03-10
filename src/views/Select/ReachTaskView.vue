@@ -1,25 +1,23 @@
 <template>
     <div class="main">
         <el-card class="card">
-            <el-card shadow="never">
-                <div class="type-card-header">
-                    <el-col>
-                        <el-row class="type-header"><el-text tag="h3" size="large">分类</el-text></el-row>
-                        <el-row span="5" v-for="item in alltypes">
-                            <el-space wrap :size="10" spacer=":">
-                                <div class="card-item">
-                                    <el-text type="info" size="default">{{ item?.[0] }}</el-text>
-                                </div>
-                                <el-space wrap :size="20" spacer="|">
-                                    <el-row span="1" v-for="t in item?.[1]" class="type-row">
-                                        <el-link @click="selectBykey(t, 1)" :underline="false">{{ t }}</el-link>
-                                    </el-row>
-                                </el-space>
+            <div class="type-card-header">
+                <el-text>分类</el-text>
+                <el-col :span="24">
+                    <el-row span="5" v-for="item in alltypes">
+                        <el-space wrap :size="10" spacer=":">
+                            <div class="card-item">
+                                <el-text type="info" size="default">{{ item?.[0] }}</el-text>
+                            </div>
+                            <el-space wrap :size="20" spacer="|">
+                                <el-row span="1" v-for="t in item?.[1]" class="type-row">
+                                    <el-link @click="selectBykey(t, 1)" :underline="false">{{ t }}</el-link>
+                                </el-row>
                             </el-space>
-                        </el-row>
-                    </el-col>
-                </div>
-            </el-card>
+                        </el-space>
+                    </el-row>
+                </el-col>
+            </div>
             <div class="task-card">
                 <div>
                     <el-row>
@@ -53,7 +51,6 @@
   
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import HeaderView from "./HeaderView.vue";
 import type { TaskItem } from "@/pojos/Typeimpl";
 import { getTaskTags, getTaskByCategory, getTaskByKeyword } from "@/apis/apis";
 import { routerTeskView, handleAvatarClick } from "@/apis/routeApis";
@@ -114,7 +111,7 @@ const selectBykey = async (key: string, num: number) => {
 @import '../../assets/bask.css';
 
 .card {
-    width: 80%;
+    width: 90%;
     height: 1500px;
 }
 
@@ -131,22 +128,17 @@ const selectBykey = async (key: string, num: number) => {
 
 .task-card {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 80%;
 }
 
 .type-card-header {
-    width: 80%;
-    height: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height:150px;
 }
 
 .pagination {
-    margin-bottom: 5px;
+    margin-top: 1200px;
     margin-left: 100px;
 }
 </style>

@@ -1,67 +1,61 @@
 <template>
-    <Suspense>
+    <el-card shadow="never" class="create-card">
+        <el-text tag="h2"
+            style="display: flex; justify-content: center; align-items: center; font-size: 20px; ">新建任务</el-text>
+        <el-form :model="tesk" ref="form" label-width="100px" style="margin-top: 30px;">
+            <el-form-item label="名称：">
+                <el-input v-model="tesk.name" placeholder="情输入名称"></el-input>
+            </el-form-item>
+            <el-form-item label="分区：">
+                <el-select v-model="tesk.bigType" placeholder="请选择" style="width: 120px">
+                    <el-option v-for="item in bigTypes" :key="item.name" :label="item.name" :value="item.name"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="标签：">
+                <el-space>
+                    <el-tag v-for="tag in tesk.type" :closable=true class="mx-1" @close="handleClose(tag)">
+                        {{ tag }}
+                    </el-tag>
+                </el-space>
+                <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1-w-20"
+                    @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" size="small" />
+                <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
+                    + 新标签
+                </el-button>
+            </el-form-item>
+            <el-form-item label="描述：">
+                <el-input v-model="tesk.description" class="input-textarea" type="textarea" show-word-limit
+                    maxlength="500"></el-input>
+            </el-form-item>
+            <el-form-item label="地点选择：">
+                <el-button v-if="!map.ifSelect" type="primary" @click="handleAreaSelect()">选择地点</el-button>
+                <el-button v-if="map.ifSelect" @click="handleAreaCancel()" type="primary">确认地点</el-button>
+                <SelectAreaViewVue v-if="isArea && map.name != undefined" :map="map"></SelectAreaViewVue>
+                <el-input v-model="map.name" class="area-input"></el-input>
+            </el-form-item>
+            <el-form-item label="设定酬劳">
+                <el-input v-model="tesk.price" style="width: 100px;"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="dataflag = !dataflag">设定期望完成时间</el-button>
+                <el-text type="info" tag="h2">{{ tesk.dueTime }}</el-text>
+            </el-form-item>
+            <el-form-item label="图片：">
+                <picturdLoadView :pictures="tesk.imageUrl"></picturdLoadView>
+            </el-form-item>
+            <el-form-item>
+                <el-button v-if="tesk != undefined" type="primary" @click="handleSubmit(tesk)">提交任务</el-button>
+            </el-form-item>
+        </el-form>
+    </el-card>
 
-        <el-card shadow="never" class="create-card">
-            <el-text tag="h2"
-                style="display: flex; justify-content: center; align-items: center; font-size: 20px; ">新建任务</el-text>
-            <el-form :model="tesk" ref="form" label-width="100px" style="margin-top: 30px;">
-                <el-form-item label="名称：">
-                    <el-input v-model="tesk.name" placeholder="情输入名称"></el-input>
-                </el-form-item>
-                <el-form-item label="分区：">
-                    <el-select v-model="tesk.bigType" placeholder="请选择" style="width: 120px">
-                        <el-option v-for="item in bigTypes" :key="item.name" :label="item.name"
-                            :value="item.name"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="标签：">
-                    <el-space>
-                        <el-tag v-for="tag in tesk.type" :closable=true class="mx-1" @close="handleClose(tag)">
-                            {{ tag }}
-                        </el-tag>
-                    </el-space>
-                    <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1-w-20"
-                        @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" size="small" />
-                    <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
-                        + 新标签
-                    </el-button>
-                </el-form-item>
-                <el-form-item label="描述：">
-                    <el-input v-model="tesk.description" class="input-textarea" type="textarea" show-word-limit
-                        maxlength="500"></el-input>
-                </el-form-item>
-                <el-form-item label="地点选择：">
-                    <el-button v-if="!map.ifSelect" type="primary" @click="handleAreaSelect()">选择地点</el-button>
-                    <el-button v-if="map.ifSelect" @click="handleAreaCancel()" type="primary">确认地点</el-button>
-                    <SelectAreaViewVue v-if="isArea && map.name != undefined" :map="map"></SelectAreaViewVue>
-                    <el-input v-model="map.name" class="area-input"></el-input>
-                </el-form-item>
-                <el-form-item label="设定酬劳">
-                    <el-input v-model="tesk.price" style="width: 100px;"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="dataflag = !dataflag">设定期望完成时间</el-button>
-                    <el-text type="info" tag="h2">{{ tesk.dueTime }}</el-text>
-                </el-form-item>
-                <el-form-item label="图片：">
-                    <picturdLoadView :pictures="tesk.imageUrl"></picturdLoadView>
-                </el-form-item>
-                <el-form-item>
-                    <el-button v-if="tesk != undefined" type="primary" @click="handleSubmit(tesk)">提交任务</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
-
-        <el-dialog v-model="dataflag" title="期望时间" :before-close="handleClose">
-            <el-calendar v-model="taskData" />
-            <el-button @click="dataOk(true)">确定</el-button>
-            <el-button @click="dataOk(false)">取消</el-button>
-        </el-dialog>
-
-    </Suspense>
+    <el-dialog v-model="dataflag" title="期望时间" :before-close="handleClose">
+        <el-calendar v-model="taskData" />
+        <el-button @click="dataOk(true)">确定</el-button>
+        <el-button @click="dataOk(false)">取消</el-button>
+    </el-dialog>
 </template>
 <script setup lang="ts">
-import HeaderView from './HeaderView.vue';
 import { ref, type Ref, nextTick } from "vue"
 import { sendTask } from "@/apis/apis"
 import { userStore } from '@/stores/role';
@@ -120,7 +114,7 @@ const handleSubmit = async (tesk: TaskFrom) => {
 }
 const tesk = ref<TaskFrom>(new TaskFrom());
 const handleClose = (tag: string) => {
-    tesk.value.type.push(tag);
+    tesk.value.type = tesk.value.type.filter(item => item !== tag);
 }
 
 const showInput = () => {
@@ -148,5 +142,5 @@ const handleAreaCancel = () => {
 
 </script>
 <style scoped>
-@import '../assets/bask.css';
+@import '../../assets/bask.css';
 </style>../utils/apis../utils/apis@/pojos/Typeimpl@/stors/role

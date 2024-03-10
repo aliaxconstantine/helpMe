@@ -1,7 +1,4 @@
 <template>
-    <Suspense>
-        <HeaderView :ismain="false"></HeaderView>
-    </Suspense>
     <div class="config-all">
         <el-container>
             <el-aside>
@@ -105,11 +102,17 @@
                                     :style="{ width: '40%' }"></el-input>
                             </el-form-item>
                             <el-form-item size="large">
-                                <el-button type="primary" @click="subPhone">下一步</el-button>
+                                <el-button type="primary" @click="nextView">下一步</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
-                    <div v-if="active == 3" class="config-phone-3"> </div>
+                    <div v-if="active == 3" class="config-phone-3">
+                        <el-result icon="success" title="修改成功" sub-title="Please follow the instructions">
+                            <template #extra>
+                                <el-button type="primary" @click="index = 1">Back</el-button>
+                            </template>
+                        </el-result>
+                    </div>
                 </div>
                 <div v-if="index == 5">
                     <el-form class="config-recode">
@@ -137,7 +140,7 @@
                         </el-form-item>
                     </el-form>
                 </div>
-                <div v-if="index == 6"> 
+                <div v-if="index == 6">
                     <el-text tag="h1">更改头像</el-text>
                     <pictureLoadViewVue :pictures="pictureList"></pictureLoadViewVue>
                     <el-button @click="uploadPicture(pictureList)">确认更改</el-button>
@@ -164,13 +167,13 @@
 </template>
 <script lang="ts" setup>
 import type { UserInfo } from '@/pojos/Typeimpl';
-import HeaderView from './HeaderView.vue';
 import { ref } from 'vue';
-import type { UserFrom } from '@/pojos/TypeInclass';
-import { getSelfInfo,updateAavatar, getUserInfo, updateInfoUser, updateDetailUser, updatePassword, getVerificationCode, getAllRecodeList, sendResetCode } from '@/apis/apis';
+import type { TUser, UserFrom } from '@/pojos/TypeInclass';
+import { getSelfInfo, updateAavatar, getUserInfo, updateInfoUser, updateDetailUser, updatePassword, getVerificationCode, getAllRecodeList, sendResetCode } from '@/apis/apis';
 import { ElMessageBox } from 'element-plus';
-import  pictureLoadViewVue from './picture/pictureLoadView.vue';
-import {onMounted} from 'vue';
+import pictureLoadViewVue from '@/views/Picture/pictureLoadView.vue';
+import { onMounted } from 'vue';
+import { userStore } from '@/stores/role';
 const index = ref(2);
 const dialogVisible = ref(false);
 const active = ref(1);
@@ -198,13 +201,12 @@ const selectView = (indexs: number) => {
     index.value = indexs;
     console.log(indexs);
 }
-onMounted( async () => {
+onMounted(async () => {
     userInfo.value = await getUserInfo() as UserInfo;
     tuser.value = await getSelfInfo() as UserFrom;
     recodeList.value = await getAllRecodeList() as recode[];
     olduser.value = { ...tuser.value };
-    olduserInfo.value = { ...userInfo.value };
-}
+    olduserInfo.value = { ...userInfo.value };}
 )
 const password = ref({
     old: '',
@@ -218,20 +220,22 @@ const phone = ref({
     newphone: '',
 });
 
-const uploadPicture = async(list:string[]) =>{
-    if(list.length > 0){
-        const flag  = await updateAavatar(list[0]);
-        if(flag){
+const uploadPicture = async (list: string[]) => {
+    if (list.length > 0) {
+        const flag = await updateAavatar(list[0]);
+        if (flag) {
             ElMessageBox.alert('修改成功');
+            const me = await getSelfInfo() as UserFrom;
+            //获取自己的头像
+            userStore().userImage = me.icon;
+            console.log(me);
         }
     }
-    else{
+    else {
         ElMessageBox.alert('请先上传头像');
     }
 }
-const subPhone = async () => {
 
-}
 //提交修改
 const resetForm = async (userInfo: UserInfo | undefined, tuser: UserFrom | undefined) => {
     if (userInfo != undefined && tuser != undefined) {
@@ -246,6 +250,7 @@ const resetForm = async (userInfo: UserInfo | undefined, tuser: UserFrom | undef
         type: 'error'
     })
 }
+
 //重置
 const submitForm = () => {
     tuser.value = { ...olduser.value } as UserFrom;

@@ -87,7 +87,6 @@
 
 <script setup lang="ts">
 import { OtherUser, UserInfo, UserStar } from '@/pojos/Typeimpl'
-import HeaderView from './HeaderView.vue';
 import { type TaskItem, type friendInfo } from '@/pojos/Typeimpl';
 import { ref } from "vue";
 import { getType } from '@/utils/dataUtils';

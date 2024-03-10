@@ -6,6 +6,7 @@ export const userStore = defineStore("user", {
       userName: "未登录",
       token: "",
       userImage: "",
+      friendId: 0,
     };
   },
   getters: {
@@ -13,6 +14,7 @@ export const userStore = defineStore("user", {
     getUserName: (state) => state.userName,
     getToken: (state) => state.token,
     getUserImage: (state) => state.userImage,
+    getFriendId: (state) => state.friendId,
   },
   actions: {},
   persist: {

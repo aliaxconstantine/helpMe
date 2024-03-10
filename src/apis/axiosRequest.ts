@@ -4,10 +4,10 @@ import { ElMessage } from "element-plus";
 import { userStore } from "../stores/role";
 
 export const errorLog = async (error: unknown) => {
-  console.error("错误信息" + error);
+   console.error("错误信息" + error);
 };
 
-export const url = "http://localhost:9997";
+export const url = import.meta.env.VITE_APP_BACKEND_URL;
 
 export const getResponse = async (response: AxiosResponse) => {
   return response.data;
@@ -34,7 +34,6 @@ export const sendRequestAll = async (
        headers["Authorization"] = userStore().token;
     }
     const targetObject = Object.assign(headers, header);
-    console.log(data);
     const response = await axios({
       method,
       url: url + endpoint,
@@ -67,7 +66,6 @@ export const sendRequest = async (
 ): Promise<unknown | undefined> => {
   try {
     const response = await sendRequestAll(method, endpoint, data, header);
-    console.log(response);
     if (response == undefined) {
       return undefined;
     } else {

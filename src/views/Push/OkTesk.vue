@@ -44,12 +44,12 @@
   
 <script lang="ts" setup>
 import { TaskItem, UserStar, TaskTime, User } from '@/pojos/Typeimpl'; // 请替换为正确的路径
-import HeaderView from './HeaderView.vue';
 import { onMounted, ref } from 'vue';
 import { getTask, getTaskTime, sendUserMessage, addFriend, finishTask, getOtherUser } from '@/apis/apis';
-import { routerTeskView,routerView, handleAvatarClick } from '@/apis/routeApis';
+import { routerTeskView, routerView, handleAvatarClick } from '@/apis/routeApis';
 import { ElMessageBox } from 'element-plus';
 import type { UserFrom } from '@/pojos/TypeInclass';
+import { userStore } from '@/stores/role';
 const props = defineProps(
     {
         id: {
@@ -64,6 +64,7 @@ const userStar = ref<UserFrom>();
 const taskCordMessage = ref('');
 onMounted(async () => {
     const idnu = Number(props.id);
+
     if (idnu != undefined) {
         //获取任务信息
         task.value = await getTask(idnu) as TaskItem;
@@ -72,6 +73,11 @@ onMounted(async () => {
         if (task.value.userId != null) {
             //获取用户信息
             userStar.value = await getOtherUser(task.value.userId) as UserFrom;
+        }
+        //如果该任务用户已经接受返回主页
+        if(task.value.assigneeId == userStore().userId){
+           //返回主页
+           routerView('')
         }
     }
     else {
@@ -98,7 +104,7 @@ const acceptTask = async () => {
         if (friendflag && messageflag && taskflag) {
             alert('任务已接受！');
         }
-        routerView("")
+        routerView("order")
     }
 }
 //放弃任务

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import HeaderView from '@/views/Main/HeaderView.vue';
-import TeskView from '@/views/Main/TeskView.vue';
-import { getTask, getTaskChat, sendTaskMessage, } from "@/apis/apis"
+import { getTask, getTaskChat, sendTaskMessage, starTask, getMessaegStarStatus, cancelStarTask } from "@/apis/apis"
 import { handleAvatarClick } from '@/apis/routeApis'
 import { type Task, type TUser } from "@/pojos/TypeInclass"
 import { errorLog } from '@/apis/axiosRequest'
@@ -13,6 +11,7 @@ import { ElMessageBox } from 'element-plus';
 import { type TaskItem, TaskMessageImpl } from '@/pojos/Typeimpl';
 import { getTimeElapsedString } from '@/utils/dataUtils';
 import { watch } from "vue";
+import Star from 'element-plus';
 
 watch(() => props.id, () => { onMounted })
 
@@ -27,6 +26,17 @@ const teskUser = ref({
 const users = userStore();
 const isLoading = ref(true)
 
+class StarTask {
+    id: number;
+    star: number;
+    constructor(id: number, star: number) {
+        this.id = id;
+        this.star = star;
+    }
+}
+
+const starTaskList = ref<StarTask[]>([]);
+
 const props = defineProps({
     id: {
         type: String,
@@ -38,6 +48,12 @@ const updateMessage = async () => {
     teskChat.value = null;
     const data = await getTaskChat(Number(props.id)) as Array<TaskMessageImpl>;
     chatList.value = data;
+    chatList.value.forEach(async (item) => {
+        if (item.id == undefined) {
+            return
+        }
+        starTaskList.value.push(new StarTask(item.id, await getMessaegStarStatus(item.id) as number));
+    })
 }
 
 onMounted(async () => {
@@ -81,7 +97,6 @@ const sendMessage = async (message: string) => {
     date.taskId = Number(props.id)
     date.state = 0
     const ifFlag = await sendTaskMessage(Number(props.id), date) as boolean;
-    console.log(ifFlag)
     if (!ifFlag) {
         ElMessageBox.alert("发送失败", "提示");
     }
@@ -126,7 +141,6 @@ const deTesk = async (teskid: number | undefined) => {
 }
 
 const gettaskUrl = (taskurl: string | undefined) => {
-    console.log(taskurl)
     if (taskurl == undefined) {
         return ""
     }
@@ -134,7 +148,6 @@ const gettaskUrl = (taskurl: string | undefined) => {
     //不存在逗号时返回原来的url
     if (taskurl.indexOf(",") == -1) {
         list.push(taskurl)
-        console.log(list)
         return list;
     }
     //通过每个逗号分隔taskurl获取到列表
@@ -146,6 +159,39 @@ const getTime = (date: string | undefined) => {
         return getTimeElapsedString(date)
     }
 }
+
+const starMessage = (id: number | undefined) => {
+    if (id != undefined) {
+        const star = starTaskList.value.find(item => item.id == id)
+        const statu = star?.star
+        if (statu == 0) {
+            //取消点赞
+            cancelStarTask(id)
+            if (star != undefined) {
+                star.star = 1
+            }
+        }
+        if (statu == 1) {
+            //点赞
+            starTask(id)
+            if (star != undefined) {
+                star.star = 0
+            }
+        }
+    }
+}
+
+const getStarStatus = (statu: number | undefined) => {
+    if (statu == undefined) {
+        return "primary"
+    }
+    if (statu == 1) {
+        return "primary"
+    }
+    if (statu == 0) {
+        return "danger"
+    }
+}
 </script>
 
 <template>
@@ -154,7 +200,7 @@ const getTime = (date: string | undefined) => {
         <el-card shadow="never">
             <el-container>
                 <el-header>
-                    <div class="header-container">
+                    <div class="header-container" style="margin-bottom: 10px;">
                         <el-avatar :src="teskUser?.image" @click="handleAvatarClick(teskUser?.id)"></el-avatar>
                         <div class="header-info">
                             <el-text class="header-name">{{ teskUser.name }}</el-text>
@@ -169,7 +215,7 @@ const getTime = (date: string | undefined) => {
                         </div>
                     </div>
                 </el-header>
-                <el-main>
+                <el-main style="margin-top: 20px;">
                     <el-text>{{ tesk?.description }}</el-text>
                     <div class="main-image" v-for="image in gettaskUrl(tesk?.imageUrl)">
                         <el-image fit="contain" :src="image"></el-image>
@@ -190,18 +236,29 @@ const getTime = (date: string | undefined) => {
                 <el-button type="primary" @click="sendMessage(teskChat)">发送</el-button>
             </div>
 
-            <div v-for=" chat in chatList" :key="chat.userName" class="chat-item">
+            <div v-for=" chat in chatList" :key="chat.userName" class="chat-item" style="height: 60px; margin-left: 10px; margin-top: -5px;">
                 <div class="chat-header">
-                    <el-avatar :src="chat.userIcon"></el-avatar>
-                    <div class="chat-header-info">
-                        <el-text style=" color: #000; font-size: 16px;"> {{ chat.userName }}</el-text>
-                        <el-text style="color: #999 ; font-size: 12px;">&nbsp;&nbsp;&nbsp;{{
-                            getTime(chat.createTime) }}</el-text>
-                    </div>
+                    <el-avatar :src="chat.userIcon" size="default"></el-avatar>
+                    <div class="chat-header-info" style="margin-left: 5px; margin-top: 23px;">
+                        <el-text style="color: #000; font-size: 16px;"> {{ chat.userName }}:</el-text>
+                        <el-text style="color: #999 ; font-size: 16px;">&nbsp;&nbsp;&nbsp;{{
+                            getTime(chat.createTime)  }} </el-text>
+                    
                 </div>
-                <div class="chat-content">
+                <div class="chat-content" style="margin-left: 5px; font-size: 16px; margin-top: 2px;">
                     <el-text>{{ chat.message }}</el-text>
                 </div>
+                    <div style="margin-left: 200px;">
+                        <el-button circle size="small" style="width: 15px; height: 15px; position: relative;"
+                            :type="getStarStatus(starTaskList.find(item => item.id == chat.id)?.star)"
+                            @click="starMessage(chat.id)">
+                            <el-icon>
+                                <Pointer />
+                            </el-icon>
+                        </el-button>
+                    </div>
+                </div>
+
             </div>
         </el-card>
     </div>

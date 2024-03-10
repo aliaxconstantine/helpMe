@@ -8,13 +8,26 @@ export const useTask = (pageNum: number = 1) => {
     taskPageList.value = data;
     return taskPageList.value;
   };
+
+  //获取热门页数
+  const getIPageTasks = async (pageNum: number) => {
+    const data = (await getPageTasks(pageNum)) as Task[];
+    taskPageList.value = data;
+    return taskPageList.value;
+  };
+  //获取附近页数
+  const getNearPageTasks = async (pageNum: number) => {
+    
+  };
+
   onMounted(() => {
     getFristPageData();
-
   });
 
 
   return {
-    taskPageList
+    taskPageList,
+    getIPageTasks,
+    getNearPageTasks
   };
 };

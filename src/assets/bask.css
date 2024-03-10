@@ -228,7 +228,7 @@
 .container-main {
   width: 80%;
   background-color: aliceblue;
-  height: 700px;
+  height: 570px;
   padding: 20px;
 }
 
@@ -317,11 +317,11 @@
   flex-direction: column;
 }
 
-.task-image{
+.task-image {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 .task-name {
@@ -402,7 +402,6 @@
   font-weight: bold;
 }
 
-
 .user-task {
   width: 100%;
   height: 100%;
@@ -472,7 +471,8 @@
 }
 
 .test-border {
-  height: 100%;
+  height: 800px;
+
 }
 
 .aside {
@@ -524,8 +524,8 @@
 }
 
 .chat-content {
-  margin-top: 6px;
-  margin-left: 20px;
+  margin-top: -10px;
+  margin-left: 40px;
 }
 
 .header-container {
@@ -644,7 +644,7 @@
 }
 
 .message-card {
-  height: 1200px;
+  height: 850px;
 }
 
 /* 任务卡片整体样式 */
@@ -720,8 +720,14 @@
 }
 
 .type-card-header {
-  display: flex;
-  margin-left: 60px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  font-size: 12px;
+  line-height: 40px;
+  color: #666;
+  font-weight: 700;
+  text-align: left;
 }
 
 .type-row {
@@ -735,26 +741,26 @@
   height: 700px;
 }
 
-.config-phone-1{
+.config-phone-1 {
   margin-left: 350px;
   margin-top: 50px;
 }
 
 /*其他用户资料页面*/
-.other-info{
+.other-info {
   margin-left: 300px;
   height: 30%;
   width: 100%;
   display: flex;
   flex-direction: row;
 }
-.other-tesk{
+.other-tesk {
   margin-top: 10px;
   margin-left: 300px;
   height: 70%;
   width: 100%;
 }
-.other-view{
+.other-view {
   height: 800px;
   margin-top: 20px;
   display: flex;
@@ -762,35 +768,35 @@
   justify-content: center;
   align-items: center;
 }
-.other-info-card{
+.other-info-card {
   display: flex;
   flex-direction: row;
   margin-top: 30px;
-  margin-left:50px;
+  margin-left: 50px;
 }
 
-.other-info-img{
+.other-info-img {
   width: 150px;
   height: 150px;
   margin-left: 30px;
 }
 
-.other-info-info{
+.other-info-info {
   margin-left: 20px;
-  margin-top:50px
+  margin-top: 50px;
 }
 
-.other-info-info-text{
+.other-info-info-text {
   font-size: 15px;
   display: flex;
   flex-direction: column;
 }
 
-.other-tesk-card{
+.other-tesk-card {
   display: flex;
 }
 
-.other-tesk-card-user{
+.other-tesk-card-user {
   display: flex;
   margin-left: -40px;
 }

@@ -1,7 +1,10 @@
 import { type Commit} from 'vuex';
 import { createStore } from 'vuex';
-import {loginGetToken} from '../apis/apis'
+import {getFriends, getSelfInfo, loginGetToken} from '../apis/apis'
 import { userStore } from '../stores/role';
+import type { friendInfo } from '@/pojos/Typeimpl';
+import socketconnect from './chatWebSocket';
+import type { TUser, UserFrom } from '@/pojos/TypeInclass';
  
 interface AuthState {
   isAuthenticated: boolean;
@@ -43,6 +46,14 @@ const actions = {
             catch(e){
               reject(false);
             }
+            //获取好友第一位id
+            const fid = (await getFriends() as friendInfo[])[0];
+            if(fid.friendId){
+              userStore().friendId = fid.friendId;
+            }
+            const me = await getSelfInfo() as UserFrom;
+            //获取自己的头像
+            userStore().userImage = me.icon;
       }, 1000);
     });
   },
@@ -68,3 +79,4 @@ export const store = createStore<RootState>({
     },
   },
 });
+

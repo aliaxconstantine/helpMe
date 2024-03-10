@@ -2,6 +2,22 @@
     <!-- 右侧任务展示 -->
     <el-tabs type="border-card" class="test-border" @tab-click="handleTabClick">
         <el-tab-pane label="发布任务">
+            <el-empty :image-size="200" v-if="typeTesks.inItTesks.length < 1" />
+            <el-card class="custom-card" @click="routerUserTaskView(1, tesk.id)" v-for="tesk in typeTesks.inItTesks"
+                v-if="ifLoad">
+                <el-text class="custom-title">{{ tesk.name }}</el-text>
+                <div class="custom-publisher">
+                    <el-icon>
+                        <user-filled />
+                    </el-icon>
+                    {{ tesk.initiatorId }}
+                </div>
+                <el-text class="custom-content">{{ tesk.description }}</el-text>
+                <el-text class="custom-status" id="status">{{ getType(Number(tesk.status)) }}</el-text>
+            </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="接受任务">
+            <el-empty :image-size="200" v-if="typeTesks.sendTesks.length < 1" />
             <el-card class="custom-card" @click="routerUserTaskView(1, tesk.id)" v-for="tesk in typeTesks.sendTesks"
                 v-if="ifLoad">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
@@ -15,7 +31,8 @@
                 <el-text class="custom-status" id="status">{{ getType(Number(tesk.status)) }}</el-text>
             </el-card>
         </el-tab-pane>
-        <el-tab-pane label="承接任务">
+        <el-tab-pane label="未完成任务">
+            <el-empty :image-size="200" v-if="typeTesks.IncompleteTasks.length < 1" />
             <el-card class="custom-card" @click="routerUserTaskView(0, tesk.id)" v-for="tesk in typeTesks.IncompleteTasks"
                 v-if="ifLoad">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
@@ -30,6 +47,7 @@
             </el-card>
         </el-tab-pane>
         <el-tab-pane label="全部任务">
+            <el-empty :image-size="200" v-if="typeTesks.publishTesks.length < 1" />
             <el-card class="custom-card" v-for="tesk in typeTesks.publishTesks" v-if="ifLoad"
                 @click="routerUserTaskView(ifPublish(tesk), tesk.id)">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
@@ -48,9 +66,8 @@
   
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import HeaderView from './HeaderView.vue'
 import { type TaskItem, TaskEnum } from '@/pojos/Typeimpl'
-import { getTypeTasks, getTask, getUserTasks, } from '@/apis/apis'
+import { getTypeTasks, getTask, getUserTasks, getUserPublishedTasks, } from '@/apis/apis'
 import { routerTeskView, routerUserTaskView } from '@/apis/routeApis'
 import { userStore } from '@/stores/role'
 import { errorLog } from '@/apis/axiosRequest'
@@ -69,7 +86,8 @@ const typeTesks = ref({
     completeTesks: Array<TaskItem>(),
     IncompleteTasks: Array<TaskItem>(),
     publishTesks: Array<TaskItem>(),
-    sendTesks: Array<TaskItem>()
+    sendTesks: Array<TaskItem>(),
+    inItTesks: Array<TaskItem>(),
 })
 
 
@@ -96,10 +114,16 @@ const getAllTesk = async (pageNum: number) => {
     console.log(typeTesks.value.publishTesks)
 }
 
-//获取发送的任务
+//获取用户已接受的任务
 const getSendTesk = async (pageNum: number) => {
     typeTesks.value.sendTesks = await getUserTasks(pageNum) as TaskItem[]
     console.log(typeTesks.value.sendTesks)
+}
+
+//获取用户发布的任务
+const getPublishTesk = async (pageNum: number) => {
+    typeTesks.value.inItTesks = await getUserPublishedTasks(pageNum) as TaskItem[]
+    console.log(typeTesks.value.publishTesks)
 }
 
 const ifPublish = (task: TaskItem) => {
@@ -118,6 +142,7 @@ onMounted(async () => {
         getIncompleteTasks(1);
         getAllTesk(1);
         getSendTesk(1);
+        getPublishTesk(1);
         ifLoad.value = true
     } catch (error) {
         errorLog(error)

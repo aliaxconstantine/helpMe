@@ -81,11 +81,12 @@ export const router = createRouter({
           }),
         },
         {
-          path: "video/:id",
-          name: "video",
-          component: () => import("@/views/Chat/VideoView.vue"),
-          meta: { requiresAuth: true, title: '视频通话' },
-        },
+          //支付页面
+          path: "pay",
+          name: "pay",
+          component: () => import("@/views/Pay/PayView.vue"),
+          meta: { requiresAuth: true, title: '支付' },
+        }
       ]
     },
     {

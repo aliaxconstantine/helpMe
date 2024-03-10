@@ -93,12 +93,11 @@ const chatRoute = (otherId: number) => {
 }
 
 
-
 </script>
 <template>
     <el-menu :unique-opened="true" :ellipsis="false" mode="horizontal" class="header-menu" background-color="#ffffff">
         <div>
-            <el-image src="../components/icons/small_log_back.jpg"></el-image>
+            <el-image src="src/components/icons/helpme.png" class="helpme" ></el-image>
         </div>
         <div class="flex-grow"></div>
         <el-menu-item index="1" @click="routerView('')">首页</el-menu-item>
@@ -115,7 +114,7 @@ const chatRoute = (otherId: number) => {
         <div class="flex-grow"></div>
         <el-popover :visible="dropdownVisible" class="el-popover__popper" placement="top" :width="160">
             <template #reference>
-                <el-avatar v-if="isAuthenticated" @click="showDropdown" icon="UserFilled" />
+                <el-avatar v-if="isAuthenticated" @click="showDropdown" :src="userStore().userImage" />
             </template>
             <div class="dropdown-content">
                 <div class="user-info">
@@ -165,4 +164,8 @@ const chatRoute = (otherId: number) => {
 
 <style scoped>
 @import '../../assets/bask.css';
+.helpme {
+    width: 70px;
+    height: 70px;
+}
 </style>

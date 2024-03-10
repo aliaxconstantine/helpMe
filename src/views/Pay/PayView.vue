@@ -7,10 +7,10 @@
             <el-main>
                 <el-form :model="form" label-width="100px">
                     <el-form-item label="订单号">
-                        <span>123456789</span>
+                        <span>{{ task?.id }}</span>
                     </el-form-item>
                     <el-form-item label="订单金额">
-                        <span>¥100.00</span>
+                        <span>¥{{task?.price}}</span>
                     </el-form-item>
                     <el-form-item label="支付方式">
                         <el-select v-model="form.paymentMethod" placeholder="请选择">
@@ -43,12 +43,25 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { getTask } from '@/apis/apis';
+import { routerView } from '@/apis/routeApis';
+import type { Task } from '@/pojos/TypeInclass';
+import type { TaskFrom } from '@/pojos/Typeimpl';
+import { onMounted, ref } from 'vue';
 //传入订单数据
 const props = defineProps({
-    order: Object,
+    id: {
+        type: Number,
+        required: true
+    }
 });
 
+const task = ref<Task>();
+onMounted( async() => {
+    // 获取订单数据
+    // 这里可以添加获取订单数据的逻辑
+    task.value = await getTask(props.id) as Task; 
+});
 
 const form = ref({
     paymentMethod: '',
@@ -67,7 +80,7 @@ const handleBack = () => {
     // 返回上一页
     // 这里可以添加返回上一页的逻辑
     // 模拟支付成功
-    
+    routerView("main")
 };
 
 </script>

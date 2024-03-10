@@ -1,0 +1,47 @@
+.friend-box {
+    display: flex;
+    /* 使用 Flexbox 布局 */
+    align-items: center;
+    flex-direction: column;
+    background-color: #d3e9fa;
+    border-radius: 10px;
+    width: 20%;
+    height: 90%;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+
+.friend-item {
+    background-color: #d3e9fa;
+    display: flex !important;
+    /* 使用 Flexbox 布局 */
+    align-items: center !important;
+    height: 30px;
+    margin-top: 2px;
+    margin-right: 170px;
+    width: 95%;
+}
+
+.clicked {
+    background-color: lightblue;
+    /* 设置选中时的背景颜色 */
+}
+
+.all-friend {
+    font-weight: 600;
+    font-size: 16px;
+    margin-right: 180px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.friend-name {
+    margin-left: 3px;
+    font-size: 19px;
+}
+
+.friend-avatar {
+    margin-right: 5px;
+    border: 2px solid white;
+}
