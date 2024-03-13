@@ -279,7 +279,7 @@ export const updateTask = async (task: TaskFrom) => {
  * @returns {Promise<boolean>} 更新结果
  */
 export const updateInfoUser = async (user: UserFrom) => {
-  return await sendRequest("POST", "/user/me/update", user);
+  return await sendRequest("POST", "/user/update", user);
 };
 
 
@@ -363,6 +363,48 @@ export const submitTask = async (list: string[],taskId: number) => {
   return res;
 };
 
+//提交任务完成
+export const okTask = async (taskId: number) => {
+  const res = await sendRequest("POST", `/task/ok?taskId=${taskId}`);
+  return res;
+};
+
+//支付订单
+export const payOrder = async (id: string) => {
+  const res = await sendRequest("POST", `/task/pay?orderId=${id}`);
+  return res;
+};
+
+//退款
+export const unpayOrder = async (id: string) => {
+  const res = await sendRequest("POST", `/task/unPay?orderId=${id}`);
+  return res;
+};
+
+//确认退款
+export const refundOrder = async (id: string) => {
+  const res = await sendRequest("POST", `/task/confirmRefund?refundId=${id}`);
+  return res;
+};
+
+//获取退款单
+export const getRefundData = async (id: string) => {
+  const res = await sendRequest("GET", `/task/confirmRefund?orderId=${id}`);
+  return res;
+};
+
+//获取订单数据
+export const getOrderData = async (id: string) => {
+  const res = await sendRequest("GET", `/task/pay?orderId=${id}`);
+  return res;
+};
+
+//获取有没有该任务的订单
+export const getOrder = async (id: string) => {
+  const res = await sendRequest("GET", `/task/order?taskID=${id}`);
+  return res;
+};
+
 /**
  * 获取全部任务标签
  * @returns {Promise<any>} 返回任务标签
@@ -440,4 +482,9 @@ export const getMessageStar = async (messageId: number) => {
 //获取任务评价点赞与否
 export const getMessaegStarStatus = async (messageId: number) => {
   return await sendRequest("GET", `/taskMessage/star/status?messageId=${messageId}/status`);
+};
+
+//获取所有系统消息
+export const getSystemMessages = async (pageNum: number) => {
+  return await sendRequest("GET", `/smsg/all?pageNum=${pageNum}` );
 };

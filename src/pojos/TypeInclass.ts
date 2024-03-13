@@ -27,7 +27,7 @@ export interface Friend {
 
 // 订单信息
 export interface Orders {
-  id?: number;
+  id?: string;
   customerId?: number;
   orderData: string; 
   productId?: number;
@@ -45,6 +45,8 @@ export interface RefundRecord {
   createdAt: string; 
   updatedAt: string; 
 }
+
+
 
 // 任务信息
 export interface Task {

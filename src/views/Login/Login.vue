@@ -10,10 +10,10 @@
           <el-main>
             <h3>用户登录</h3>
             <el-form :model="loginForm" :rules="loginrules" label-width="80px" class="login-form">
-              <el-form-item label="用户名" prop="name">
+              <el-form-item label="用户名" prop="username">
                 <el-input v-model.trim="loginForm.username" placeholder="请输入用户名"></el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="pwd">
+              <el-form-item label="密码" prop="password">
                 <el-input type="password" v-model.trim="loginForm.password" placeholder="请输入密码" :show-password="true"></el-input>
               </el-form-item>
               <el-form-item label="验证码" prop="code">
@@ -37,7 +37,7 @@
               <el-form-item label="邮箱" prop="email">
                 <el-input v-model.trim="registerForm.email" placeholder="请输入邮箱"></el-input>
               </el-form-item>
-              <el-form-item label="用户名" prop="username">
+              <el-form-item label="用户名" prop="loginName">
                 <el-input v-model.trim="registerForm.loginName" placeholder="请输入用户名"></el-input>
               </el-form-item>
               <el-form-item label="密码" prop="password">
@@ -162,11 +162,13 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 
 const loginrules = reactive<FormRules<RuleForm>>({
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }],
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { pattern:  /^[0-9]+$/, message: '只允许数字', trigger: ['blur', 'change'] }
+  ],
+    
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' }
   ]
-
 })
 
 
@@ -183,8 +185,9 @@ const registerRules = reactive<FormRules<RegisterForm>>({
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { type: 'email', message: '请输入有效的邮箱', trigger: ['blur', 'change'] }
   ],
-  nickName: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
+  loginName: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { pattern: /^[0-9]+$/, message: '只允许数字', trigger: ['blur', 'change'] }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },

@@ -56,12 +56,12 @@ export const router = createRouter({
           props: true,
         },
         {
-          path: "taskinfo/:id/:isPublish",
+          path: "taskinfo/:teskid/:isPublish",
           name: "taskinfo",
           component: () => import("@/views/Task/TeskUserView.vue"),
           meta: { requiresAuth: true, title: '任务信息' },
           props: (route) => ({
-            teskid: Number(route.params.id),
+            teskid: Number(route.params.teskid),
             isPublisher: Number(route.params.isPublish),
           }),
         },
@@ -82,10 +82,13 @@ export const router = createRouter({
         },
         {
           //支付页面
-          path: "pay",
+          path: "pay/:id",
           name: "pay",
           component: () => import("@/views/Pay/PayView.vue"),
           meta: { requiresAuth: true, title: '支付' },
+          props: (route) => ({
+             id: route.params.id,
+          }),
         }
       ]
     },

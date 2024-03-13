@@ -62,10 +62,15 @@
                     </div>
                     <div>
                         <el-text tag="b">当前完成进度</el-text>
-                        
-                        <el-image v-for="picture in pictures" :src="picture"></el-image>
+                        <el-carousel indicator-position="outside" style="width: 800px; height: 100%">
+                            <el-carousel-item v-for="picture in pictures" :key="picture">
+                                <el-image :src="picture"></el-image>
+                            </el-carousel-item>
+                        </el-carousel>
                     </div>
-                    <el-button @click="confirmTask">确认任务完成</el-button>
+                    <el-button @click="confirmTask" v-if="task?.status == '1'">确认任务完成</el-button>
+                    <el-button @click="refund" v-if="isPay">退款</el-button>
+                    <el-text v-if="isOrderRefund(tOrder)">等待退款中</el-text>
                 </div>
             </el-card>
         </div>
@@ -135,12 +140,22 @@
                         <el-text tag="b">任务状态：</el-text>
                         <el-text>{{ getType(Number(task?.status)) }}</el-text>
                     </div>
-                    <div>
+                    <div v-if="task?.status == '1'">
                         <el-text tag="b">上传完成图片</el-text>
-                        <picturdLoadView :pictures="pictures"></picturdLoadView>
+                        <pictureLoadView :pictures="pictures"></pictureLoadView>
+                    </div>
+                    <div v-else>
+                        <el-text tag="b">当前完成进度</el-text>
+                        <el-carousel indicator-position="outside" style="width: 800px; height: 100%">
+                            <el-carousel-item v-for="picture in pictures" :key="picture">
+                                <el-image :src="picture"></el-image>
+                            </el-carousel-item>
+                        </el-carousel>
                     </div>
                     <div>
-                        <el-button type="primary" @click="okTask">提交进度</el-button>
+                        <el-button type="primary" @click="okSTask" v-if="task?.status == '1'">提交进度</el-button>
+                        <el-button v-if="isOrderRefund(tOrder)" @click="confirmRefund">确认退款</el-button>
+                        <el-text v-if="isOrderRefund(tOrder)">等待退款中</el-text>
                     </div>
                 </div>
             </el-card>
@@ -148,16 +163,18 @@
     </div>
 </template>
 <script setup lang="ts">
-import { submitTask } from '@/apis/apis';
+import { okTask, submitTask, unpayOrder, refundOrder } from '@/apis/apis';
 import { useUserTask } from '@/composables/useUserTask/useUserTask';
-import { routerTeskView, handleAvatarClick, routerView } from '@/apis/routeApis';
-import picturdLoadView from "@/views/picture/pictureLoadView.vue"
-import { TaskImages } from "@/pojos/Typeimpl";
+import { routerTeskView, handleAvatarClick, routerView, routerIdView } from '@/apis/routeApis';
+import pictureLoadView from "@/views/Picture/pictureLoadView.vue"
 import { getType, formatToYMDHM } from '@/utils/dataUtils'
 import TaskLocationView from '@/views/Location/taskLocationView.vue';
-import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { on } from 'events';
+import { Order, RefundForm } from '@/pojos/Typeimpl';
+import router from '@/router';
+import { useOrder } from '@/composables/useOrder/useOrder';
+import { useReFund } from '@/composables/useReFund/useReFund';
+
 const props = defineProps({
     teskid: {
         type: Number,
@@ -170,41 +187,27 @@ const props = defineProps({
 })
 
 const isPublish = props.isPublisher === 1
-const pictures = ref<string[]>([])
-const { task, taskTime, publish, submitTaskImage } = useUserTask(props.teskid, props.isPublisher == 1)
-
-onMounted(() => {
-    if (submitTaskImage.value) {
-        submitTaskImage.value.forEach((item) => {
-            if (item.imageUrl) {
-                pictures.value.push(item.imageUrl)
-            }
-        })
-    }
-})
+const { task, taskTime, publish, pictures } = useUserTask(props.teskid, props.isPublisher == 1)
+const { tOrder, isPay } = useOrder(props.teskid.toString());
+if(tOrder.value == null){
+    tOrder.value = new Order();
+}
+const { unPay, isOrderRefund } = useReFund(tOrder.value.id.valueOf())
 
 
 const callPublisher = (id: number) => {
     routerTeskView('/message', id)
 }
 
-const getPrgress = () => {
-    submitTaskImage.value?.forEach(
-        (item) => {
-            if (item.imageUrl) {
-                pictures.value.push(item.imageUrl);
-            }
-        }
-    )
-    return pictures.value
+const confirmTask = async () => {
+    const flag = await okTask(props.teskid) as Order;
+    if (flag) {
+        //转换到付款界面
+        router.push(`/pay/${flag.id}`);
+    }
 }
 
-const confirmTask = () => {
-    //转换到付款界面
-
-}
-
-const okTask = async () => {
+const okSTask = async () => {
     const flag = await submitTask(pictures.value, props.teskid) as boolean;
     if (flag) {
         //提交成功，返回主页
@@ -213,7 +216,41 @@ const okTask = async () => {
         routerView('');
     }
 }
+//发出退款请求
+const refund = async () => {
+    if (tOrder.value && tOrder.value.id) {
+        const flag = await unpayOrder(tOrder.value.id.valueOf()) as RefundForm;
+        if (flag) {
+            //退款成功
+            ElMessage.success('您已申请退款');
+            //返回主页
+            routerView('');
+        }
+    }
+}
 
+//确认退款
+const confirmRefund = async () => {
+    //提示退款成功
+    ElMessageBox.confirm('确认退款', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(async () => {
+        if (unPay.value && unPay.value.id) {
+            const flag = await refundOrder(unPay.value?.id) as RefundForm;
+            if (flag) {
+                //退款成功
+                ElMessage.success('退款成功');
+                //返回主页
+                routerView('');
+            }
+        }
+    }).catch(() => {
+        //取消退款
+        ElMessage.info('已取消退款');
+    });
+}
 
 </script>
 <style scoped>

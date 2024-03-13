@@ -47,8 +47,8 @@
                                 :autosize="{ minRows: 4, maxRows: 4 }" :style="{ width: '60%' }"></el-input>
                         </el-form-item>
                         <el-form-item size="large">
-                            <el-button type="primary" @click="submitForm">提交</el-button>
-                            <el-button @click="resetForm">重置</el-button>
+                            <el-button type="primary" @click="resetForm(userInfo, tuser)">提交</el-button>
+                            <el-button @click="submitForm">重置</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -95,7 +95,7 @@
                             </el-form-item>
                         </el-form>
                     </div>
-                    <div v-if="active == 2" class="config-phone-2">
+                    <div v-if="active == 2" class="config-phone-1">
                         <el-form v-if="tuser != undefined && userInfo != undefined">
                             <el-form-item label="需要更换的手机号">
                                 <el-input v-model="phone.newphone" placeholder="请输入手机号" clearable
@@ -109,7 +109,7 @@
                     <div v-if="active == 3" class="config-phone-3">
                         <el-result icon="success" title="修改成功" sub-title="Please follow the instructions">
                             <template #extra>
-                                <el-button type="primary" @click="index = 1">Back</el-button>
+                                <el-button type="primary" @click="index = 1; active = 1" >Back</el-button>
                             </template>
                         </el-result>
                     </div>
@@ -174,6 +174,8 @@ import { ElMessageBox } from 'element-plus';
 import pictureLoadViewVue from '@/views/Picture/pictureLoadView.vue';
 import { onMounted } from 'vue';
 import { userStore } from '@/stores/role';
+import router from '@/router';
+import { routerView } from '@/apis/routeApis';
 const index = ref(2);
 const dialogVisible = ref(false);
 const active = ref(1);
@@ -206,7 +208,8 @@ onMounted(async () => {
     tuser.value = await getSelfInfo() as UserFrom;
     recodeList.value = await getAllRecodeList() as recode[];
     olduser.value = { ...tuser.value };
-    olduserInfo.value = { ...userInfo.value };}
+    olduserInfo.value = { ...userInfo.value };
+}
 )
 const password = ref({
     old: '',
@@ -228,7 +231,6 @@ const uploadPicture = async (list: string[]) => {
             const me = await getSelfInfo() as UserFrom;
             //获取自己的头像
             userStore().userImage = me.icon;
-            console.log(me);
         }
     }
     else {
@@ -236,20 +238,30 @@ const uploadPicture = async (list: string[]) => {
     }
 }
 
+console.log(userInfo.value?.sex)
+
 //提交修改
 const resetForm = async (userInfo: UserInfo | undefined, tuser: UserFrom | undefined) => {
     if (userInfo != undefined && tuser != undefined) {
         const flag = await updateInfoUser(tuser)
         const iflag = await updateDetailUser(userInfo)
+        if (flag == undefined && iflag == undefined) {
+            ElMessageBox.alert('修改失败', '失败', {
+                type: 'error'
+            })
+        }
         ElMessageBox.alert('修改成功', '成功', {
             type: 'success'
         })
-        return
+        routerView("config")
     }
-    ElMessageBox.alert('修改失败', '失败', {
-        type: 'error'
-    })
+    else {
+        ElMessageBox.alert('修改失败', '失败', {
+            type: 'error'
+        })
+    }
 }
+
 
 //重置
 const submitForm = () => {

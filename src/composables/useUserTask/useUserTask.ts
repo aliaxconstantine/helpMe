@@ -3,32 +3,31 @@ import type { TUser, Task, OtherUserFrom } from "@/pojos/TypeInclass";
 import {
   getTask,
   getOtherUser,
-  getTypeTasks,
   getTaskTime,
-  submitTask,
   getTasksImages,
+  getOrder,
+  getRefundData,
 } from "@/apis/apis";
-import type { TaskImages, TaskItem, TaskTime } from "@/pojos/Typeimpl";
-import { userStore } from "@/stores/role";
-import { useOneTask } from "../useOneTask/useOneTask";
+import type { Order, TaskImages, TaskItem, TaskTime,RefundForm } from "@/pojos/Typeimpl";
 
 export const useUserTask = (taskId: number, isPublish: boolean) => {
   const task = ref<TaskItem>();
   const publish = ref<OtherUserFrom>();
   const taskTime = ref<TaskTime>();
   const submitTaskImage = ref<TaskImages[]>();
+  const pictures = ref<string[]>([]);
 
   const getTaskData = async () => {
-    task.value = await getTask(taskId) as Task;
-    taskTime.value = await getTaskTime(taskId) as TaskTime;
-    submitTaskImage.value = await getTasksImages(taskId) as TaskImages[];
+    task.value = (await getTask(taskId)) as Task;
+    taskTime.value = (await getTaskTime(taskId)) as TaskTime;
+    submitTaskImage.value = (await getTasksImages(taskId)) as TaskImages[];
     if (task.value != null) {
       if (isPublish && task.value.assigneeId) {
         publish.value = (await getOtherUser(
           task.value.assigneeId
         )) as OtherUserFrom;
       }
-      if (!isPublish && task.value.initiatorId ) {
+      if (!isPublish && task.value.initiatorId) {
         publish.value = (await getOtherUser(
           task.value.initiatorId
         )) as OtherUserFrom;
@@ -36,14 +35,25 @@ export const useUserTask = (taskId: number, isPublish: boolean) => {
     }
   };
 
+  const getImages = () => {
+    if (submitTaskImage.value) {
+      submitTaskImage.value.forEach((item) => {
+        if (item.imageUrl) {
+          pictures.value.push(item.imageUrl);
+        }
+      });
+    }
+  };
+  
   onMounted(async () => {
     await getTaskData();
+    getImages();
   });
 
   return {
     task,
     publish,
     taskTime,
-    submitTaskImage
+    pictures,
   };
 };

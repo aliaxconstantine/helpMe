@@ -1,7 +1,7 @@
 <template>
     <footer class="footer">
       <div class="footer-content">
-        <p>© 2024 商洛学院 - 版权所有</p>
+        <p>© 2024 神秘小站 - 版权所有</p>
         <ul class="footer-links">
           <li><a href="#">首页</a></li>
           <li><a href="#">关于我们</a></li>

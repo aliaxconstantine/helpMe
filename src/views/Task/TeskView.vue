@@ -2,7 +2,7 @@
 import { routerTeskView } from '@/apis/routeApis'
 import { useTask } from '@/composables/useTask/useTask'
 import { ref } from 'vue';
-const { taskPageList,getNearPageTasks,getIPageTasks} = useTask();
+const { taskPageList,getIPageTasks} = useTask();
 //广告图片
 const categories = [
     {

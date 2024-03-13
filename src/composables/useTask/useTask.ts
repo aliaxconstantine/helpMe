@@ -15,10 +15,6 @@ export const useTask = (pageNum: number = 1) => {
     taskPageList.value = data;
     return taskPageList.value;
   };
-  //获取附近页数
-  const getNearPageTasks = async (pageNum: number) => {
-    
-  };
 
   onMounted(() => {
     getFristPageData();
@@ -28,6 +24,5 @@ export const useTask = (pageNum: number = 1) => {
   return {
     taskPageList,
     getIPageTasks,
-    getNearPageTasks
   };
 };

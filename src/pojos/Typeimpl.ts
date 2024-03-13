@@ -41,9 +41,9 @@ export class FriendConnection implements Friend {
   ) {}
 }
 
-export class Order implements Orders {
+export class Order  {
   constructor(
-    public id?: number,
+    public id: String = "",
     public customerId?: number,
     public orderData: string = "",
     public productId?: number,
@@ -254,3 +254,23 @@ export class TaskImages {
     public imageUrl?: string
   ) {}
 }
+//退款类
+export class RefundForm {
+  constructor(
+    public id: string,
+    public orderId: number,
+    public amount: number,
+    public status: string,
+    public createdAt: string,
+    public updatedAt: string
+  ) {}
+}
+
+export class SysMessage {
+  constructor (
+    public id: string,
+    public userId ? : number,
+    public message ? : string,
+  ){}
+}
+

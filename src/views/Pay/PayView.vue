@@ -9,8 +9,14 @@
                     <el-form-item label="订单号">
                         <span>{{ task?.id }}</span>
                     </el-form-item>
+                    <el-form-item label="订单状态">
+                        <el-tag>{{ task?.status }}</el-tag>
+                    </el-form-item>
+                    <el-form-item label="订单详情">
+                        {{ task?.description }}
+                    </el-form-item>
                     <el-form-item label="订单金额">
-                        <span>¥{{task?.price}}</span>
+                        <span>¥{{ task?.price }}</span>
                     </el-form-item>
                     <el-form-item label="支付方式">
                         <el-select v-model="form.paymentMethod" placeholder="请选择">
@@ -22,7 +28,7 @@
                         <el-button type="primary" @click="submitPayment">立即支付</el-button>
                     </el-form-item>
                 </el-form>
-                <el-dialog title="支付结果" :visible.sync="dialogVisible">
+                <el-dialog title="支付结果" v-model="dialogVisible">
                     <el-col :sm="12" :lg="6" v-if="paymentSuccess">
                         <el-result icon="success" title="支付成功" sub-title="您已成功完成支付">
                             <template #extra>
@@ -43,24 +49,37 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { getTask } from '@/apis/apis';
+import { getTask, okTask, payOrder,getOrderData } from '@/apis/apis';
 import { routerView } from '@/apis/routeApis';
 import type { Task } from '@/pojos/TypeInclass';
-import type { TaskFrom } from '@/pojos/Typeimpl';
+import { TaskTime, Order, type TaskFrom } from '@/pojos/Typeimpl';
+import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 //传入订单数据
 const props = defineProps({
     id: {
-        type: Number,
+        type: String,
         required: true
     }
 });
 
 const task = ref<Task>();
-onMounted( async() => {
+const order = ref<Order>();
+const time = ref<TaskTime>()
+onMounted(async () => {
+    console.log('订单详情', props.id);
     // 获取订单数据
+    order.value = await getOrderData(props.id) as Order;
     // 这里可以添加获取订单数据的逻辑
-    task.value = await getTask(props.id) as Task; 
+    if (order.value.customerId) {
+        task.value = await getTask(order.value.customerId) as Task;
+    }
+    //如果订单已经支付
+    if (task.value && task.value.status === '已支付') {
+        // 订单已经支付
+        ElMessage.info('订单已支付，即将返回主页。');
+        routerView('');
+    }
 });
 
 const form = ref({
@@ -69,18 +88,30 @@ const form = ref({
 const dialogVisible = ref(false);
 const paymentSuccess = ref(true);
 
-const submitPayment = () => {
+const submitPayment = async () => {
     // 模拟支付请求
     // 这里可以添加真实的支付逻辑
-    // 模拟支付成功
-    dialogVisible.value = true;
+    if (order.value && order.value.id) {
+        const flag = await payOrder(order.value.id.valueOf()) as boolean;
+        if (flag) {
+            // 支付成功
+            dialogVisible.value = true;
+        }
+        else {
+            // 支付失败
+            paymentSuccess.value = false;
+        }
+    }
+    else{
+        ElMessage.error('请重试');
+    }
 };
 
 const handleBack = () => {
     // 返回上一页
     // 这里可以添加返回上一页的逻辑
     // 模拟支付成功
-    routerView("main")
+    routerView("")
 };
 
 </script>

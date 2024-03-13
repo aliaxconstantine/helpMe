@@ -127,6 +127,7 @@ const deTesk = async (teskid: number | undefined) => {
             if (flag) {
                 //删除成功
                 ElMessageBox.alert("撤销成功");
+                routerView("")
             } else {
                 //删除失败
                 ElMessageBox.alert("撤销失败");
@@ -222,10 +223,11 @@ const getStarStatus = (statu: number | undefined) => {
                     </div>
                 </el-main>
                 <el-text class="main-post-Button" v-if="tesk?.assigneeId == users.userId">已承接该任务</el-text>
-                <el-button class="main-post-Button" v-if="ifself(Number(tesk?.initiatorId), Number(tesk?.assigneeId))"
+                <el-button class="main-post-Button" v-if="ifself(Number(tesk?.initiatorId), Number(tesk?.assigneeId)) && tesk?.type == '5'"
                     @click="teskPost(tesk?.id)">接受任务</el-button>
                 <el-button class="main-post-Button" v-if="tesk?.initiatorId == users.userId"
                     @click="deTesk(tesk?.id)">撤销任务</el-button>
+
             </el-container>
         </el-card>
 

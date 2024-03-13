@@ -31,7 +31,7 @@ declare global {
 
 const getLocationOfCUser = async () => {
   try {
-    locations.value = await getLocationUserTasks(Number(props.publisherId), Number(props.teskId)) as Task[]
+    locations.value = await getLocationUserTasks(1) as Task[]
   } catch (error) {
     errorLog(error)
   }

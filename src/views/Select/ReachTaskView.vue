@@ -19,7 +19,7 @@
                 </el-col>
             </div>
             <div class="task-card">
-                <div>
+                <div class="task-card-title">
                     <el-row>
                         <el-col span="5" v-for="item in tasks" :key="item.id">
                             <el-card style="height: 250px; width: 300px;" v-if="tasks != undefined && tasks?.length > 0"
@@ -126,20 +126,35 @@ const selectBykey = async (key: string, num: number) => {
     margin-left: 10px;
 }
 
-.task-card {
-    display: flex;
-    width: 80%;
-}
+
 
 .type-card-header {
     display: flex;
     flex-direction: column;
     height:150px;
 }
+.task-card {
+    display: flex;
+    width: 80%;
+    height: 1300px;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* 添加相对定位，以便绝对定位子元素 */
+}
 
 .pagination {
-    margin-top: 1200px;
-    margin-left: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
+
+.task-card-title {
+    margin-top: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 </style>
   @/utils/apis@/pojos/TypeInclass@/pojos/Typeimpl

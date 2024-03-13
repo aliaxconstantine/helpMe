@@ -24,12 +24,19 @@ export function getTimeElapsedString(timestampString: string): string {
   }
 }
 
-export function getType(type: number):string|undefined{
+export function getType(type: number): string | undefined {
   const typeList = new Map<number, string>()
-   .set(1, "未完成")
-   .set(2, "未承接")
-   .set(3, "已完成")
-  return typeList.get(type)
+    .set(1, "未完成")
+    .set(2, "已完成")
+    .set(3, "未完成")
+    .set(4, "发布")
+    .set(5, "未承接")
+    .set(6, "未完成")
+    .set(7, "完成")
+    .set(9, "已付款")
+    .set(8, "已退款");
+
+  return typeList.get(type);
 }
 
 
