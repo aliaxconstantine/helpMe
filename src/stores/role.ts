@@ -7,6 +7,8 @@ export const userStore = defineStore("user", {
       token: "",
       userImage: "",
       friendId: 0,
+      location: [116.482145,39.990039],
+      city:"北京市"
     };
   },
   getters: {
@@ -15,6 +17,8 @@ export const userStore = defineStore("user", {
     getToken: (state) => state.token,
     getUserImage: (state) => state.userImage,
     getFriendId: (state) => state.friendId,
+    getLocation: (state) => state.location,
+    getCity: (state) => state.city
   },
   actions: {},
   persist: {

@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import HeaderView from '@/views/Main/HeaderView.vue'
 import { ref } from 'vue'
-import TeskViewVue from '@/views/Task/TeskView.vue'
-import AdvertisingViewVue from '@/views/Task/AdvertisingView.vue';
 import FooterView from '@/views/Main/FooterView.vue'
+import NearByLocation from '../Location/NearByLocation.vue';
 const ismain = ref(true)
 document.title = "主页"
 </script>
 <template>
   <Suspense>
-    <HeaderView :ismain="true"></HeaderView>
+    <HeaderView></HeaderView>
   </Suspense>
   <RouterView :key="$route.fullPath"></RouterView>
   <FooterView></FooterView>

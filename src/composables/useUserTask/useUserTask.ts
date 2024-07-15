@@ -9,25 +9,30 @@ import {
   getRefundData,
 } from "@/apis/apis";
 import type { Order, TaskImages, TaskItem, TaskTime,RefundForm } from "@/pojos/Typeimpl";
+import { userStore } from "@/stores/role";
 
-export const useUserTask = (taskId: number, isPublish: boolean) => {
+export const useUserTask = (taskId: number) => {
   const task = ref<TaskItem>();
   const publish = ref<OtherUserFrom>();
   const taskTime = ref<TaskTime>();
   const submitTaskImage = ref<TaskImages[]>();
   const pictures = ref<string[]>([]);
+  const isPublish = ref(false);
 
   const getTaskData = async () => {
     task.value = (await getTask(taskId)) as Task;
     taskTime.value = (await getTaskTime(taskId)) as TaskTime;
     submitTaskImage.value = (await getTasksImages(taskId)) as TaskImages[];
+    if(task.value.initiatorId == userStore().userId){
+      isPublish.value = true;
+    }
     if (task.value != null) {
-      if (isPublish && task.value.assigneeId) {
+      if (!isPublish && task.value.assigneeId) {
         publish.value = (await getOtherUser(
           task.value.assigneeId
         )) as OtherUserFrom;
       }
-      if (!isPublish && task.value.initiatorId) {
+      if (isPublish && task.value.initiatorId) {
         publish.value = (await getOtherUser(
           task.value.initiatorId
         )) as OtherUserFrom;
@@ -55,5 +60,6 @@ export const useUserTask = (taskId: number, isPublish: boolean) => {
     publish,
     taskTime,
     pictures,
+    isPublish
   };
 };

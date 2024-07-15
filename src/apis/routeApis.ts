@@ -51,17 +51,3 @@ export const handleAvatarClick = async (uid: number | undefined) => {
   await router.push({ name: "other", params: { id: uid } });
 };
 
-export const routerUserTaskView = async (
-  isPublish: number | undefined,
-  id: number | undefined
-) => {
-  try {
-    // 在你的组件中
-    await router.push({
-      name: "taskinfo",
-      params: { id: id, isPublish: isPublish },
-    });
-  } catch (error) {
-    errorLog(error);
-  }
-};

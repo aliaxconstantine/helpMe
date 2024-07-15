@@ -78,7 +78,6 @@ const socketconnect: Socket = {
 
     this.websock = new WebSocket(this.ws_url);
     this.websock.onopen = () => {
-      errorLog("连接成功");
       this.socket_open = true;
       this.is_reonnect = true;
       this.heartbeat();

@@ -56,13 +56,12 @@ export const router = createRouter({
           props: true,
         },
         {
-          path: "taskinfo/:teskid/:isPublish",
+          path: "taskinfo/:teskid",
           name: "taskinfo",
           component: () => import("@/views/Task/TeskUserView.vue"),
           meta: { requiresAuth: true, title: '任务信息' },
           props: (route) => ({
             teskid: Number(route.params.teskid),
-            isPublisher: Number(route.params.isPublish),
           }),
         },
         {

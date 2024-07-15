@@ -15,7 +15,7 @@
             <div>
                 <el-card class="location-card">
                     <el-text class="task-price" type="warning">任务地点</el-text>
-                    <TaskLocationView v-if="task?.x != undefined && task?.y != undefined" :x="task?.x" :y="task?.y" />
+                    <taskLocationView v-if="task?.x != undefined && task?.y != undefined" :x="task?.x" :y="task?.y" />
                 </el-card>
             </div>
             <div class="task-time">
@@ -50,6 +50,8 @@ import { routerTeskView, routerView, handleAvatarClick } from '@/apis/routeApis'
 import { ElMessageBox } from 'element-plus';
 import type { UserFrom } from '@/pojos/TypeInclass';
 import { userStore } from '@/stores/role';
+import router from '@/router';
+import taskLocationView from '../Location/taskLocationView.vue';
 const props = defineProps(
     {
         id: {
@@ -85,7 +87,7 @@ onMounted(async () => {
     }
 })
 const callPublisher = (id: number) => {
-    routerTeskView('/message', id)
+    router.push(`/message/${id}`)
 }
 
 
@@ -104,13 +106,15 @@ const acceptTask = async () => {
         if (friendflag && messageflag && taskflag) {
             alert('任务已接受！');
         }
-        routerView("order")
+        alert("任务接受成功")
+        
+        router.push(`/taskinfo/${task.value.id}`)
     }
 }
 //放弃任务
 const rejectTask = () => {
     //返回到任务介绍页面
-    routerTeskView("task", Number(props.id))
+    routerView("")
 }
 
 </script>

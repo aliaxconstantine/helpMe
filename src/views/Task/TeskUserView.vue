@@ -24,9 +24,7 @@
                                 </div>
                             </div>
                             <div>
-                                <el-image>
-                                    <img :src="task?.imageUrl" alt="任务图片" />
-                                </el-image>
+                                <el-image :src="task?.imageUrl"></el-image>
                             </div>
                         </div>
                         <el-divider />
@@ -68,8 +66,8 @@
                             </el-carousel-item>
                         </el-carousel>
                     </div>
-                    <el-button @click="confirmTask" v-if="task?.status == '1'">确认任务完成</el-button>
-                    <el-button @click="refund" v-if="isPay">退款</el-button>
+                    <el-button @click="confirmTask" v-if="task?.status == '3'">确认任务完成</el-button>
+                    <el-button @click="refund" v-if="isPay && !isOrderRefund(tOrder)">退款</el-button>
                     <el-text v-if="isOrderRefund(tOrder)">等待退款中</el-text>
                 </div>
             </el-card>
@@ -98,9 +96,7 @@
                                 </div>
                             </div>
                             <div>
-                                <el-image>
-                                    <img :src="task?.imageUrl" alt="任务图片" />
-                                </el-image>
+                                <el-image :src="task?.imageUrl"></el-image>
                             </div>
                         </div>
                         <el-divider />
@@ -140,7 +136,7 @@
                         <el-text tag="b">任务状态：</el-text>
                         <el-text>{{ getType(Number(task?.status)) }}</el-text>
                     </div>
-                    <div v-if="task?.status == '1'">
+                    <div v-if="task?.status == '3'">
                         <el-text tag="b">上传完成图片</el-text>
                         <pictureLoadView :pictures="pictures"></pictureLoadView>
                     </div>
@@ -153,7 +149,7 @@
                         </el-carousel>
                     </div>
                     <div>
-                        <el-button type="primary" @click="okSTask" v-if="task?.status == '1'">提交进度</el-button>
+                        <el-button type="primary" @click="okSTask" v-if="task?.status == '3'">提交进度</el-button>
                         <el-button v-if="isOrderRefund(tOrder)" @click="confirmRefund">确认退款</el-button>
                         <el-text v-if="isOrderRefund(tOrder)">等待退款中</el-text>
                     </div>
@@ -165,7 +161,7 @@
 <script setup lang="ts">
 import { okTask, submitTask, unpayOrder, refundOrder } from '@/apis/apis';
 import { useUserTask } from '@/composables/useUserTask/useUserTask';
-import { routerTeskView, handleAvatarClick, routerView, routerIdView } from '@/apis/routeApis';
+import { routerTeskView, handleAvatarClick, routerView } from '@/apis/routeApis';
 import pictureLoadView from "@/views/Picture/pictureLoadView.vue"
 import { getType, formatToYMDHM } from '@/utils/dataUtils'
 import TaskLocationView from '@/views/Location/taskLocationView.vue';
@@ -174,25 +170,24 @@ import { Order, RefundForm } from '@/pojos/Typeimpl';
 import router from '@/router';
 import { useOrder } from '@/composables/useOrder/useOrder';
 import { useReFund } from '@/composables/useReFund/useReFund';
-
 const props = defineProps({
     teskid: {
         type: Number,
         required: true
     },
-    isPublisher: {
-        type: Number,
-        required: true
-    }
 })
-
-const isPublish = props.isPublisher === 1
-const { task, taskTime, publish, pictures } = useUserTask(props.teskid, props.isPublisher == 1)
+const { task, taskTime, publish, pictures, isPublish } = useUserTask(props.teskid)
 const { tOrder, isPay } = useOrder(props.teskid.toString());
-if(tOrder.value == null){
-    tOrder.value = new Order();
-}
-const { unPay, isOrderRefund } = useReFund(tOrder.value.id.valueOf())
+const isOrderRefund = (order: Order | undefined) => {
+    if (!order) {
+        return false;
+    }
+    if (order.status === "未退款") {
+        return true;
+    }
+    return false;
+};
+
 
 
 const callPublisher = (id: number) => {
@@ -237,14 +232,22 @@ const confirmRefund = async () => {
         cancelButtonText: '取消',
         type: 'warning'
     }).then(async () => {
-        if (unPay.value && unPay.value.id) {
-            const flag = await refundOrder(unPay.value?.id) as RefundForm;
-            if (flag) {
-                //退款成功
-                ElMessage.success('退款成功');
-                //返回主页
-                routerView('');
+        if (tOrder.value && tOrder.value.id) {
+            const { unPay,getRefund } = useReFund(tOrder.value.id.valueOf());
+            await getRefund(tOrder.value.id.valueOf())
+            if (unPay.value && unPay.value.id) {
+                const flag = await refundOrder(unPay.value?.id) as RefundForm;
+                console.log(flag);
+                if (flag) {
+                    //退款成功
+                    ElMessage.success('退款成功');
+                    //返回主页
+                    routerView('');
+                }
             }
+        }
+        else {
+            ElMessage.error('退款失败');
         }
     }).catch(() => {
         //取消退款

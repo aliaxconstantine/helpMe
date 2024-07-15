@@ -120,16 +120,6 @@ const loginsuccess = async (token: string) => {
   // 登录成功后的处理逻辑
   ustore.token = token;
   handleCloseDialog("登录成功")
-  const user = await getSelfInfo() as UserInfoFrom;
-  ustore.$patch(
-    (state) => {
-      if (user.userId != undefined) {
-        state.userId = user.userId
-        state.userName = user.nickName
-        state.userImage = user.icon
-      }
-    }
-  )
   routerView('')
 }
 

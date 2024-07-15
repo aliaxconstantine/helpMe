@@ -44,7 +44,7 @@ AMapLoader.load({
 
 }).then((AMap) => {
     map.value = new AMap.Map('container', {
-        zooms:[3,14],
+        zooms: [3, 14],
         viewMode: '3D',
         resizeEnable: true
     });
@@ -54,20 +54,18 @@ AMapLoader.load({
         image: '//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
         imageSize: new AMap.Size(30, 35),
     });
-    if (props.x != null && props.y != null) {
+
+    if (props.x != undefined && props.y != undefined) {
         const marker = new AMap.Marker({
             icon: Icon,
             position: [props.x, props.y],
             offset: new AMap.Pixel(-13, -30)
         })
-        map.value.add(marker)
-        
+        map.value.add(marker);
     }
-
-    else{
+    else {
         ElMessage.error("未知错误")
     }
 })
 
 </script>
-    

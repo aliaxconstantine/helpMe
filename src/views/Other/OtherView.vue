@@ -4,7 +4,7 @@
             <el-card style="height: 100%; width: 80%;">
                 <div class="other-info-card">
                     <el-card class="other-info-img">
-                        <el-image fit="cover"></el-image>
+                        <el-image fit="cover" :src="otherUser?.achUrl"></el-image>
                     </el-card>
                     <div class="other-info-info">
                         <el-text tag="h2" size="large">{{ otherUser?.nickname }}</el-text>
@@ -15,18 +15,18 @@
                                 <el-icon>
                                     <Suitcase />
                                 </el-icon>
-                                <el-text> &nbsp; {{ otherUser?.userInfo?.workType }}</el-text>
+                                <el-text> &nbsp; {{ otherUser?.tuserInfo?.workType }}</el-text>
                             </div>
                             <div style="margin-top: 5px;"></div>
                         </div>
                     </div>
                     <div style="margin-top: 60px; margin-left: 100px;">
-                        <el-text>简介:{{ otherUser?.userInfo?.desc }}</el-text>
+                        <el-text>简介:{{ otherUser?.tuserInfo?.desc }}</el-text>
                     </div>
                     <div>
                         <el-button v-if="isFriend == false" type="primary" @click="clickAddFriend">添加好友</el-button>
                         <el-button v-if="isFriend == true" type="primary"
-                            @click="routerTeskView('message', otherUser?.id)"><el-icon>
+                            @click="router.push(`/message/${otherUserId}`)"><el-icon>
                                 <ChatRound />
                             </el-icon></el-button>
                         <el-button v-if="isFriend == true" type="danger" @click="clickDeFriend">移除好友</el-button>
@@ -47,7 +47,7 @@
                                     </el-card>
                                     <el-text>{{ star.taskName }}</el-text>
                                 </div>
-                                <div style="display: ; margin-top: 20px; margin-left: 100px;">
+                                <div style=" margin-top: 20px; margin-left: 100px;">
                                     <div class="other-tesk-card-user">
                                         <el-avatar size="small" :src="star.achUrl">头像</el-avatar>
                                         <el-text>{{ star.nickName }}</el-text>
@@ -65,7 +65,7 @@
                     </el-tab-pane>
                     <el-tab-pane label="发布任务">
                         <el-card v-if="tasks.length > 0" v-for=" tesk in tasks " :key="tesk.id" shadow="hover"
-                            class="custom-card" @click="routerUserTaskView(0, tesk.id)">
+                            class="custom-card" @click="router.push(`/taskInfo/${tesk.id}`)">
                             <div class="custom-card-content">
                                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                                 <div class="custom-publisher">
@@ -90,10 +90,12 @@ import { OtherUser, UserInfo, UserStar } from '@/pojos/Typeimpl'
 import { type TaskItem, type friendInfo } from '@/pojos/Typeimpl';
 import { ref } from "vue";
 import { getType } from '@/utils/dataUtils';
-import { routerUserTaskView, routerView, routerTeskView, } from '@/apis/routeApis';
+import {  routerView, routerTeskView, } from '@/apis/routeApis';
 import { getOtherUserTasks, getOtherUserStars, getOtherUser, addFriend, getFriends, removeFriend } from '@/apis/apis';
 import { userStore } from '@/stores/role';
 import { onMounted } from "vue";
+import router from '@/router';
+import type { Task } from '@/pojos/TypeInclass';
 const props = defineProps({
     otherUserId: {
         type: Number,
@@ -103,7 +105,7 @@ const props = defineProps({
 const value = ref(2)
 
 //是否是好友
-const isFriend = ref<boolean>()
+const isFriend = ref<boolean>(false)
 
 const otherUser = ref<OtherUser>()
 const tasks = ref<TaskItem[]>([])
@@ -143,12 +145,15 @@ onMounted(async () => {
     //检查如果是本人
     if (props.otherUserId == userStore().userId) {
         routerView('state')
-
     }
     //获取用户资料
     if (props.otherUserId != undefined && props.otherUserId != userStore().userId) {
         otherUser.value = await getOtherUser(props.otherUserId) as OtherUser
-        tasks.value = await getOtherUserTasks(props.otherUserId, 1, 1) as TaskItem[]
+        if(otherUser.value.tuserInfo != undefined && otherUser.value.tuserInfo.desc == undefined){
+            otherUser.value.tuserInfo.desc = "这家伙很懒，什么都没写"
+        }
+        tasks.value = await getOtherUserTasks(props.otherUserId, 1, 5) as Task[]
+        console.log(tasks.value)
         stars.value = await getOtherUserStars(props.otherUserId, 1) as UserStar[]
     }
     //检查是不是好友
@@ -158,7 +163,6 @@ onMounted(async () => {
             isFriend.value = true
         }
     })
-
 })
 
 

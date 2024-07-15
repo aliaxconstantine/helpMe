@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getSystemMessages, getUserTasks, } from '@/apis/apis'
-import { routerStringView, routerView, routerTeskView, routerUserTaskView, routerKeyView } from '@/apis/routeApis'
+import { routerStringView, routerView, routerTeskView, routerKeyView } from '@/apis/routeApis'
 import { type Task } from "@/pojos/TypeInclass"
 import { type SysMessage } from "@/pojos/Typeimpl"
 import { checkLoginStatus, router, } from '@/router/index'
@@ -11,12 +11,6 @@ import { errorLog } from '@/apis/axiosRequest'
 import { getType } from '@/utils/dataUtils'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
-const props = defineProps({
-    ismain: {
-        type: Boolean,
-        required: true
-    }
-})
 const dropdownVisible = ref(false)
 const selectMainKey = ref("")
 const isDrawerOpen = ref(false)
@@ -99,69 +93,73 @@ onMounted(async () => {
 })
 </script>
 <template>
-    <el-menu :unique-opened="true" :ellipsis="false" mode="horizontal" class="header-menu" background-color="#ffffff">
-        <div>
-            <el-image src="src/components/icons/helpme.png" class="helpme" ></el-image>
-        </div>
-        <div class="flex-grow"></div>
-        <el-menu-item index="1" @click="routerView('')">首页</el-menu-item>
-        <el-menu-item index="4" @click="routerKeyView('search', 'all')">分类</el-menu-item>
-        
-        <el-popover trigger="click" :width="300">
-            <template #reference>
-                <el-menu-item index="2" >消息</el-menu-item>
-            </template>
-            <div v-for="item in messages">
-                <el-text>{{ item.message }}</el-text>
-            </div>
-        </el-popover>
-        <div class="flex-grow"></div>
-        <div class="input-parent">
-            <el-input v-model="selectMainKey" placeholder="请输入需要搜索的对象" class="input-style">
-                <template #append>
-                    <el-button @click="handleSelectClick">搜索</el-button>
+    <el-affix>
+        <el-menu :unique-opened="true" :ellipsis="false" mode="horizontal" class="header-menu"
+            background-color="#ffffff">
+            <div>
+                <el-image src="../../../src/components/icons/helpme.png" class="helpme"></el-image>
+            </div> ·
+            <div class="flex-grow"></div>
+            <el-menu-item index="1" @click="routerView('')">首页</el-menu-item>
+            <el-menu-item index="4" @click="routerKeyView('search', 'all')">分类</el-menu-item>
+
+            <el-popover trigger="click" :width="300">
+                <template #reference>
+                    <el-menu-item index="2">消息</el-menu-item>
                 </template>
-            </el-input>
-        </div>
-        
-        <div class="flex-grow"></div>
-        <el-popover trigger="click" :visible="dropdownVisible" class="el-popover__popper" placement="top" :width="160">
-            <template #reference>
-                <el-avatar v-if="isAuthenticated" @click="showDropdown" :src="userStore().userImage" />
-            </template>
-            <div class="dropdown-content">
-                <div class="user-info">
-                    <span class="username">{{ userStore().userName }}</span>
+                <div v-for="item in messages">
+                    <el-text>{{ item.message }}</el-text>
                 </div>
-                <el-menu default-active="1" class="el-menu--vertical" theme="dark">
-                    <el-menu-item index="1" @click="routerView('config')">个人中心</el-menu-item>
-                    <el-menu-item index="3" @click="loginOut">退出登录</el-menu-item>
-                </el-menu>
+            </el-popover>
+            <div class="flex-grow"></div>
+            <div class="input-parent">
+                <el-input v-model="selectMainKey" placeholder="请输入需要搜索的对象" class="input-style">
+                    <template #append>
+                        <el-button @click="handleSelectClick">搜索</el-button>
+                    </template>
+                </el-input>
             </div>
-        </el-popover>
-        <el-menu-item index="6" @click="chatRoute(0)">通讯</el-menu-item>
 
-        <el-menu-item index="5" @click="openDraw">任务栏</el-menu-item>
-        <el-menu-item index="3" @click="routerView('state')">我的</el-menu-item>
+            <div class="flex-grow"></div>
+            <el-popover trigger="click" :visible="dropdownVisible" class="el-popover__popper" placement="top"
+                :width="160">
+                <template #reference>
+                    <el-avatar v-if="isAuthenticated" @click="showDropdown" :src="userStore().userImage" />
+                </template>
+                <div class="dropdown-content">
+                    <div class="user-info">
+                        <span class="username">{{ userStore().userName }}</span>
+                    </div>
+                    <el-menu default-active="1" class="el-menu--vertical" theme="dark">
+                        <el-menu-item index="1" @click="routerView('config')">个人中心</el-menu-item>
+                        <el-menu-item index="3" @click="loginOut">退出登录</el-menu-item>
+                    </el-menu>
+                </div>
+            </el-popover>
+            <el-menu-item index="6" @click="chatRoute(0)">通讯</el-menu-item>
 
-        <el-button type="primary" size="large" @click="routerView('makeTesk')">发起任务</el-button>
-        <div>
-            <el-button v-if="!isAuthenticated" size="large" @click="routerView('loginback')" title="登录">
-                <el-icon>
-                    <Avatar />
-                </el-icon>
-                &nbsp;请登录
-            </el-button>
-        </div>
-    </el-menu>
+            <el-menu-item index="5" @click="openDraw">任务栏</el-menu-item>
+            <el-menu-item index="3" @click="routerView('state')">我的</el-menu-item>
+
+            <el-button type="primary" size="large" @click="routerView('makeTesk')" round>发起任务</el-button>
+            <div>
+                <el-button v-if="!isAuthenticated" size="large" @click="routerView('loginback')" title="登录" round>
+                    <el-icon>
+                        <Avatar />
+                    </el-icon>
+                    &nbsp;请登录
+                </el-button>
+            </div>
+        </el-menu>
+    </el-affix>
     <el-drawer v-model="isDrawerOpen" title="任务栏" :with-header="false" class="drawer-style">
         <el-header class="container-header">
-            <el-pagination background layout="prev, pager, next" :default-page-size="1" v-model:current-page="currentPage"
-                :total="100" class="mt-4" :pager-count="5" :page-count="30" :page-size="pageSize"
-                @current-change="handlePageChange(currentPage)" />
+            <el-pagination background layout="prev, pager, next" :default-page-size="1"
+                v-model:current-page="currentPage" :total="100" class="mt-4" :pager-count="5" :page-count="30"
+                :page-size="pageSize" @current-change="handlePageChange(currentPage)" />
         </el-header>
         <el-card v-if="tesks.length > 0" v-for=" tesk in tesks " :key="tesk.id" shadow="hover" class="custom-card"
-            @click="router.push('/taskinfo/' + tesk.id+'/0' )">
+            @click="router.push('/taskinfo/' + tesk.id)">
             <div class="custom-card-content">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                 <div class="custom-publisher">
@@ -179,6 +177,7 @@ onMounted(async () => {
 
 <style scoped>
 @import '../../assets/bask.css';
+
 .helpme {
     width: 70px;
     height: 70px;

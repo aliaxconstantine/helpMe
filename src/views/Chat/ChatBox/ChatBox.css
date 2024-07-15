@@ -3,17 +3,22 @@
 .chat-self-content-box {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 7px;
     position: relative;
 }
 
 .chat-self-content-box {
-    margin-right: 5px;
+    margin-right: 10px;
+
+}
+.chat-content-box{
+    margin-left: 10px;
 }
 
 .chat-name,
 .chat-self-name {
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .chat-name {
@@ -55,7 +60,7 @@
 }
 
 .chat-other-content {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
 }
 
 .chat-self-other-content {

@@ -9,31 +9,34 @@ export const useOrder = (taskId: string) => {
   //判断订单是否已支付
   const isOrderPay = (order: Order | undefined) => {
     //如果为空
-    if (!order) {
+    if (order == undefined) {
       return false;
     }
-    if (order.status === "已支付") {
+    if (order.status == "已支付") {
       return true;
     }
-    if (order.status === "未退款") {
+    if (order.status == "未退款") {
       return true;
+    } else {
+      return false;
     }
-    return false;
   };
   const getOrderData = async () => {
     const order = (await getOrder(taskId)) as Order;
-    tOrder.value = order;
+    if (order != undefined) {
+      tOrder.value = order;
+      isPay.value = isOrderPay(order);
+    }
   };
 
   onMounted(() => {
     getOrderData();
-    if(isOrderPay(tOrder.value)){
-        isPay.value = true;
-    }
   });
 
   return {
     tOrder,
-    isPay
+    isPay,
+    isOrderPay,
+    getOrderData,
   };
 };

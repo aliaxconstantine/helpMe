@@ -1,54 +1,63 @@
 <template>
     <div class="main">
-        <el-card class="card">
-            <div class="type-card-header">
-                <el-text>分类</el-text>
-                <el-col :span="24">
-                    <el-row span="5" v-for="item in alltypes">
-                        <el-space wrap :size="10" spacer=":">
-                            <div class="card-item">
-                                <el-text type="info" size="default">{{ item?.[0] }}</el-text>
-                            </div>
-                            <el-space wrap :size="20" spacer="|">
-                                <el-row span="1" v-for="t in item?.[1]" class="type-row">
-                                    <el-link @click="selectBykey(t, 1)" :underline="false">{{ t }}</el-link>
-                                </el-row>
-                            </el-space>
-                        </el-space>
-                    </el-row>
+      <!-- 分类卡片 -->
+      <el-card class="card">
+        <div class="type-card-header">
+          <el-row>
+            <el-col :span="12">
+              <el-row v-for="(item, index) in alltypes" :key="index">
+                <el-col :span="4">
+                  <el-text class="category-title">{{ item?.[0] }}></el-text>
                 </el-col>
-            </div>
-            <div class="task-card">
-                <div class="task-card-title">
-                    <el-row>
-                        <el-col span="5" v-for="item in tasks" :key="item.id">
-                            <el-card style="height: 250px; width: 300px;" v-if="tasks != undefined && tasks?.length > 0"
-                                shadow="hover" @click="openTask(item.id)">
-                                <el-image :src="item.imageUrl" fit="cover" style="width:200px;height:150px;"></el-image>
-                                <div>
-                                    <el-text class="title">{{ item.name }}</el-text>
-                                </div>
-                                <div><el-text class="price" type="danger" size="large">{{ item.price }}￥</el-text></div>
-
-                                <div class="footer-text">
-                                    <el-avatar size="small" :src="item?.userIcon"
-                                        @click="handleAvatarClick(item?.id)"></el-avatar>
-                                    <el-text size="small" class="info">{{ item.userName }}</el-text>
-                                </div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </div>
-                <div class="pagination">
-                    <el-pagination layout="prev, pager, next" :default-page-size="1" v-model:current-page="currentPage"
-                        :total="100" class="mt-4" :page-count="300" :page-size="20"
-                        @current-change="selectBykey(type, currentPage)" />
-                </div>
-            </div>
-        </el-card>
-    </div>
-</template>
+                <el-col :span="12">
+                  <el-row>
+                    <el-link v-for="(t, i) in item?.[1]" :key="i" @click="selectBykey(t, 1)">
+                      {{ t }}&nbsp;|&nbsp;
+                    </el-link>
+                  </el-row>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </div>
+      </el-card>
   
+      <!-- 任务列表卡片 -->
+      <el-card class="task-card">
+        <div class="task-card-title">
+          <el-row>
+            <el-col :span="24">
+              <el-row justify="center" gutter="20">
+                <el-col :span="8" v-for="item in tasks" :key="item.id">
+                  <el-card shadow="hover" @click="openTask(item.id)">
+                    <el-image :src="item.imageUrl" fit="cover" style="height: 150px;"></el-image>
+                    <el-text class="title">{{ item.name }}</el-text>
+                    <el-text class="price" type="danger">{{ item.price }}￥</el-text>
+                    <div class="footer-text">
+                      <el-avatar size="small" :src="item.userIcon" @click="handleAvatarClick(item.id)"></el-avatar>
+                      <el-text size="small" class="info">{{ item.userName }}</el-text>
+                    </div>
+                  </el-card>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </div>
+      </el-card>
+  
+      <!-- 分页组件 -->
+      <div class="pagination">
+        <el-pagination
+          layout="prev, pager, next"
+          v-model:current-page="currentPage"
+          :total="100"
+          :page-size="20"
+          @current-change="selectBykey(type, currentPage)"
+        />
+      </div>
+    </div>
+  </template>
+
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import type { TaskItem } from "@/pojos/Typeimpl";
@@ -106,55 +115,58 @@ const selectBykey = async (key: string, num: number) => {
 }
 
 </script>
-  
+
 <style scoped>
-@import '../../assets/bask.css';
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
 
 .card {
-    width: 90%;
-    height: 1500px;
+  width: 80%;
+  padding: 20px;
+  background-color: #ffffff;
 }
-
-.main {
-    background-color: aliceblue;
-    height: 1500px;
-    display: flex;
-    justify-content: center;
-}
-
-.card-item {
-    margin-left: 10px;
-}
-
-
 
 .type-card-header {
-    display: flex;
-    flex-direction: column;
-    height:150px;
-}
-.task-card {
-    display: flex;
-    width: 80%;
-    height: 1300px;
-    justify-content: center;
-    align-items: center;
-    position: relative; /* 添加相对定位，以便绝对定位子元素 */
+  padding: 10px;
 }
 
-.pagination {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.category-title {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.task-card {
+  width: 80%;
+  padding: 20px;
+  background-color: #f9f9f9;
 }
 
 .task-card-title {
-    margin-top: 20px;
-    position: absolute;
-    left: 0;
-    top: 0;
+  padding: 10px;
 }
 
+.title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 14px;
+}
+
+.footer-text {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.info {
+  margin-left: 5px;
+  font-size: 12px;
+  color: #f7f7f7;
+}
 </style>
-  @/utils/apis@/pojos/TypeInclass@/pojos/Typeimpl

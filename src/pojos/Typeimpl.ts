@@ -148,7 +148,7 @@ export class OtherUser {
     public nickname: string = "",
     public email: string = "",
     public achUrl: string = "",
-    public userInfo?: UserInfo
+    public tuserInfo?: UserInfo
   ) {}
 }
 

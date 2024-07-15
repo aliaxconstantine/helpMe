@@ -25,7 +25,7 @@ export const addFriend = async (userId: number) => {
  * @returns {Promise<any>} 返回删除结果
 */
 export const removeFriend = async (userId: number) => {
-  return await sendRequest("DELETE", `/user/friends?otherUserId=${userId}`);
+  return await sendRequest("POST", `/user/defriend?otherUserId=${userId}`);
 };
 /**
  * 
@@ -487,4 +487,9 @@ export const getMessaegStarStatus = async (messageId: number) => {
 //获取所有系统消息
 export const getSystemMessages = async (pageNum: number) => {
   return await sendRequest("GET", `/smsg/all?pageNum=${pageNum}` );
+};
+
+//获取附近的任务
+export const getNearbyTasks = async (pageNum:number,x:number,y:number) => {
+  return await sendRequest("GET", `/task/tasks?x=${x}&y=${y}&pageNum=${pageNum}`);
 };

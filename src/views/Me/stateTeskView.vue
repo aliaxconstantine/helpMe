@@ -3,7 +3,7 @@
     <el-tabs type="border-card" class="test-border" @tab-click="handleTabClick">
         <el-tab-pane label="发布任务">
             <el-empty :image-size="200" v-if="typeTesks.inItTesks.length < 1" />
-            <el-card class="custom-card" @click="routerUserTaskView(1, tesk.id)" v-for="tesk in typeTesks.inItTesks"
+            <el-card class="custom-card" @click="router.push(`/taskInfo/${tesk.id}`)" v-for="tesk in typeTesks.inItTesks"
                 v-if="ifLoad">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                 <div class="custom-publisher">
@@ -18,7 +18,7 @@
         </el-tab-pane>
         <el-tab-pane label="接受任务">
             <el-empty :image-size="200" v-if="typeTesks.sendTesks.length < 1" />
-            <el-card class="custom-card" @click="routerUserTaskView(1, tesk.id)" v-for="tesk in typeTesks.sendTesks"
+            <el-card class="custom-card" @click="router.push(`/taskInfo/${tesk.id}`)" v-for="tesk in typeTesks.sendTesks"
                 v-if="ifLoad">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                 <div class="custom-publisher">
@@ -33,7 +33,7 @@
         </el-tab-pane>
         <el-tab-pane label="未完成任务">
             <el-empty :image-size="200" v-if="typeTesks.IncompleteTasks.length < 1" />
-            <el-card class="custom-card" @click="routerUserTaskView(0, tesk.id)" v-for="tesk in typeTesks.IncompleteTasks"
+            <el-card class="custom-card" @click="router.push(`/taskInfo/${tesk.id}`)" v-for="tesk in typeTesks.IncompleteTasks"
                 v-if="ifLoad">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                 <div class="custom-publisher">
@@ -49,7 +49,7 @@
         <el-tab-pane label="全部任务">
             <el-empty :image-size="200" v-if="typeTesks.publishTesks.length < 1" />
             <el-card class="custom-card" v-for="tesk in typeTesks.publishTesks" v-if="ifLoad"
-                @click="routerUserTaskView(ifPublish(tesk), tesk.id)">
+                @click="router.push(`/taskInfo/${tesk.id}`)">
                 <el-text class="custom-title">{{ tesk.name }}</el-text>
                 <div class="custom-publisher">
                     <el-icon>
@@ -68,11 +68,11 @@
 import { onMounted, ref } from 'vue'
 import { type TaskItem, TaskEnum } from '@/pojos/Typeimpl'
 import { getTypeTasks, getTask, getUserTasks, getUserPublishedTasks, } from '@/apis/apis'
-import { routerTeskView, routerUserTaskView } from '@/apis/routeApis'
 import { userStore } from '@/stores/role'
 import { errorLog } from '@/apis/axiosRequest'
 import { type TabsPaneContext } from 'element-plus'
 import { getType } from '@/utils/dataUtils'
+import router from '@/router'
 
 
 const ifLoad = ref(false)

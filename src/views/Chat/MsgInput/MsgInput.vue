@@ -1,14 +1,14 @@
 <template>
     <div class="msg-input">
-        <el-input size="large" placeholder="来聊点什么吧~" v-model="message"></el-input>
+        <el-input size="large" placeholder="来聊点什么吧~" v-model="message" style="margin-left: 10px;" ></el-input>
         <el-button class="send-btn" size="large" type="primary"
-            @click="sendMessage(message, userStore().friendId)">发送</el-button>
-        <el-popover placement="bottom" :visible="openEnjoydrow" :width="600" trigger="click">
+            @click="sendMessage(message, userStore().friendId)"><el-icon size="large"><ChatSquare /></el-icon></el-button>
+        <el-popover placement="bottom" :visible="openEnjoydrow"  trigger="click">
             <template #reference>
-                <el-button circle @click="openEnjoydrow = !openEnjoydrow" size="large" type="primary">😊</el-button>
+                <el-button circle @click="openEnjoydrow = !openEnjoydrow" size="large"  style="margin-right: 10px;" type="primary">😊</el-button>
             </template>
             <el-row :gutter="3">
-                <el-col v-for="e in Emoji.emojis" :key="e[0]" :span="2">
+                <el-col v-for="e in Emoji.emojis" :key="e[0]" :span="10">
                     <el-button @click="addEmoji(e[1])">{{ e[1] }}</el-button>
                 </el-col>
             </el-row>

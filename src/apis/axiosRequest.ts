@@ -4,6 +4,7 @@ import { ElMessage } from "element-plus";
 import { userStore } from "../stores/role";
 
 export const errorLog = async (error: unknown) => {
+   ElMessage.error(String(error));  
    console.error("错误信息" + error);
 };
 
@@ -42,17 +43,17 @@ export const sendRequestAll = async (
     });
 
     if (response.status !== 200) {
-      ElMessage.error(`错误信息：${response.statusText}}`);
+      errorLog(response.statusText);
       return undefined;
     }
     const rs = response.data as HttpResult;
     if (rs.code !== 0) {
-      ElMessage.error(`错误信息：${rs.msg}`);
+      errorLog(rs.msg);
       return undefined;
     }
     return rs;
   } catch (error) {
-    ElMessage.error(`请求错误，错误消息：${error}`);
+    errorLog(error);
     return undefined;
   }
 };
@@ -70,10 +71,11 @@ export const sendRequest = async (
       return undefined;
     } else {
       const result = response as HttpResult;
+
       return result.data;
     }
   } catch (error) {
-    ElMessage.error(`请求错误，错误消息：${error}`);
+    errorLog(error);
     return undefined;
   }
 };

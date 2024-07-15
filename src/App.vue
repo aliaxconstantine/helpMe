@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onUnmounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
-import socketconnect from './utils/chatWebSocket';
-import { userStore } from './stores/role';
+import socketconnect from '@/utils/chatWebSocket';
+import { userStore } from '@/stores/role';
 socketconnect.ws_url = import.meta.env.VITE_APP_WEBSOCKET_URL + `/${userStore().getUserId}`
-console.log(socketconnect.ws_url)
 //连接webSocket
 socketconnect.init()
 </script>

@@ -5,16 +5,6 @@ import { onMounted, ref } from "vue";
 export const useReFund = (orderId: string) => {
   const unPay = ref<RefundForm>();
   //判断订单是否在退款
-  const isOrderRefund = (order: Order | undefined) => {
-    if (!order) {
-        return false;
-      }
-      if(order.status === "未退款"){
-        return true;
-      }
-      return false;
-  };
-
   const getRefund = async(orderId: string) => {
     //获取退款数据
     //获取退款单
@@ -24,11 +14,8 @@ export const useReFund = (orderId: string) => {
     }
   };
 
-  onMounted(() => {
-    getRefund(orderId);
-  });
   return {
-    isOrderRefund,
-    unPay
+    unPay,
+    getRefund
   };
 };

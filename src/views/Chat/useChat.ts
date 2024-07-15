@@ -126,6 +126,7 @@ export const useUserChat = () => {
     setThisFriend,
     getInitChatlist,
     getThisFriend,
-    getThisChatList
+    getThisChatList,
+    isSelf
   }
 };
